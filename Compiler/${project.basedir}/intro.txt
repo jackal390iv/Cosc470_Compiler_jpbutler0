@@ -1,8 +1,0 @@
-<#if licenseFirst??>
-${licenseFirst}
-</#if>
-${licensePrefix}Class: COSC 470-001
-${licensePrefix}Project: Compiler
-<#if licenseLast??>
-${licenseLast}
-</#if>

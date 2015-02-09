@@ -10,4 +10,46 @@ package compiler;
  */
 public class Token {
     
+    private int level, scope;
+    private String name, type;
+        
+    public Token(){
+        
+    }
+    
+    public void setLevel(int level){
+        this.level=level;
+    }
+    
+    public int getLevel(){
+        return level;
+    }
+    
+    public void setScope(int scope){
+        this.scope=scope;
+    }
+    
+    public int getScope(){
+        return scope;
+    }
+    
+    public void setName(String name){
+        this.name=name;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+     public void setType(String type){
+        this.type=type;
+    }
+    
+    public String getType(){
+        return type;
+    }
+    
+    public String printToken(){
+        return "Name: "+name+"\t"+"Type: "+type+"\t"+"Level: "+level+"\t"+"Scope: "+scope;
+    }
 }
