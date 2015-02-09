@@ -15,22 +15,24 @@ public class TheScanner {
 
     private FileReader reader = null;
     private ArrayList<Token> tokens = new ArrayList<Token>();
-    private ArrayList<String> ids = new ArrayList<>();
+    private ArrayList<Ids> ids = new ArrayList<Ids>();
 
     public TheScanner() {
 
     }
 
     public void runScanner() {
-        ids.add("if");
-
+        scanIds();
         scanCode();
         printTokens();
     }
 
-    /**
-     *
-     */
+    private void scanIds() {
+        ids.add(new Ids("if", true));
+        ids.add(new Ids("(", false));
+        ids.add(new Ids("3", true));
+    }
+
     private void scanCode() {
         try {
             reader = new FileReader("./editedFiles/code.txt");
@@ -40,12 +42,12 @@ public class TheScanner {
                 temp = temp + (char) element;
                 tok = searchSymbolsList(temp);
                 if (tok != null) {
-                    tokens.add(new Token(temp.substring(0, temp.indexOf(tok)), "str"));
-                    tokens.add(new Token(tok, "id"));
                     temp = "";
                 }
             }
-            tokens.add(new Token(temp, "str"));
+            if (!(temp.equals(""))) {
+                tokens.add(new Token(temp, "str", true));
+            }
             reader.close();
 
         } catch (Exception ex) {
@@ -59,27 +61,32 @@ public class TheScanner {
         }
     }
 
-    /**
-     *
-     * @param temp
-     * @return
-     */
     private String searchSymbolsList(String temp) {
         String tok = null;
-        for (String item : ids) {
-            if (temp.contains(item)) {
-                tok = item;
+        boolean val = false;
+        for (Ids item : ids) {
+            if (temp.contains(item.getName())) {
+                tok = item.getName();
+                val = item.getCombinable();
+                tokens.add(new Token(temp.substring(0, temp.indexOf(tok)), "str", true));
+                if ((tok.equals("0")) || (tok.equals("1")) || (tok.equals("2")) 
+                        || (tok.equals("3")) || (tok.equals("4")) || (tok.equals("5")) 
+                        || (tok.equals("6")) || (tok.equals("7")) || (tok.equals("8")) 
+                        || (tok.equals("9"))) {
+                    tokens.add(new Token(tok, "num", true));
+                } else {
+                    tokens.add(new Token(tok, "id", val));
+                }
+                break;
             }
         }
+
         return tok;
     }
 
-    /**
-     *
-     */
     private void printTokens() {
         for (Token coin : tokens) {
-            System.out.print(coin.printToken());
+            coin.printToken();
         }
     }
 }
