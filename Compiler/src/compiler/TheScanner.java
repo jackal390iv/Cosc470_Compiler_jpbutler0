@@ -27,10 +27,27 @@ public class TheScanner {
         printTokens();
     }
 
-    private void scanIds() {
-        ids.add(new Ids("if", true));
-        ids.add(new Ids("(", false));
-        ids.add(new Ids("3", true));
+    private void scanIds() {        
+         try {
+            reader = new FileReader("./editedFiles/ids.txt");
+            int element;
+            String temp = "";
+            while ((element = reader.read()) != -1) {
+                temp = temp + (char) element;
+                
+                
+            }
+            reader.close();
+
+        } catch (Exception ex) {
+            System.out.println("\n" + "ERROR");
+            System.out.println("Type: " + ex.getClass().getName());
+            System.out.println("Location: " + this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName());
+            System.out.println("Cause: " + ex.getCause());
+            System.out.println("Message: " + ex.getMessage());
+            System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
+            //ex.printStackTrace();*/
+        }
     }
 
     private void scanCode() {
