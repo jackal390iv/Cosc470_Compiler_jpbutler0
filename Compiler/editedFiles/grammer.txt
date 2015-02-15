@@ -13,7 +13,13 @@
 
 //level 1
 ********************************************************************************
+    //block's child
+    //2 non-repeating children
 <declarations>-><DECLARE><declare_rest>
+
+    //block's child
+    //3 non-repeating children
+<compound_statement>-><BEGIN><optional_statements><END;>
 
 
 
@@ -26,6 +32,18 @@
     //declarations' child
     //3 non-repeating children
 <declare_rest>-><identifier><type><;>|<declare_rest>        
+    
+    //compound_statement's child
+    //NO CHILDREN
+<BEGIN>-><symbol>
+
+    //compound_statement's child
+    //4 non-repeating children
+<optional_statements>-><NULL;><;>|<statement_list><statement>|<statement_list><;><statement>
+
+    //compound_statement's child
+    //NO CHILDREN
+<END;>-><symbol>
 
 
 
@@ -40,8 +58,26 @@
 <type>-><data_type><default>  
 
     //declare_rest's child
+    //optional_statements' child
+    //statement_list's child
     //NO CHILDREN
 <;>-><symbol>                                      
+
+    //optional_statements' child
+    //NO CHILDREN
+<NULL;>-><symbol> 
+
+    //optional_statements' child
+    //2 non-repeating children
+    //CHILD <0> LEVELS ABOVE
+<statement_list>-><statement>|<statement_list><;><statement>
+
+    //optional_statements' child
+    //statement_list's child
+    //17 non-repeating children
+    //CHILD <2> LEVELS ABOVE
+    //CHILD <0,3> LEVELS BELOW
+<statement>-><left_hand_side>|<compound_statement>|<DBMS_OUTPUT.PUT_LINE><(><identifier><)><;>|<DBMS_OUTPUT.PUT><(><identifier><)><;>|<DBMS_OUTPUT.NEW_LINE;>|<&><identifier><;>|<IF BEGIN><expression><THEN><statement><END IF;>|<WHILE><expression><LOOP><statement><END LOOP;>
 
 
 
@@ -56,7 +92,50 @@
     //2 non-repeating children
 <default>-><:=><right_hand_side>    
        
+    //statement's child
+    //3 non-repeating children
+    //CHILD <1> LEVELS ABOVE
+<left_hand_side>-><identifier><:=><right_hand_side>
 
+    //statement's child
+    //NO CHILDREN
+<DBMS_OUTPUT.PUT_LINE>-><symbol>
+
+    //statement's child
+    //NO CHILDREN
+<DBMS_OUTPUT.PUT>-><symbol>
+
+    //statement's child
+    //NO CHILDREN
+<DBMS_OUTPUT.NEW_LINE;>-><symbol>
+
+    //statement's child
+    //NO CHILDREN
+<&>-><symbol>
+
+    //statement's child
+    //NO CHILDREN
+<IF BEGIN>-><symbol>
+
+    //statement's child
+    //NO CHILDREN
+<THEN>-><symbol>
+
+    //statement's child
+    //NO CHILDREN
+<END IF;>-><symbol>
+
+    //statement's child
+    //NO CHILDREN
+<WHILE>-><symbol>
+
+    //statement's child
+    //NO CHILDREN
+<LOOP>-><symbol>
+
+    //statement's child
+    //NO CHILDREN
+<END LOOP;>-><symbol>
 
 //level 5
 ********************************************************************************
