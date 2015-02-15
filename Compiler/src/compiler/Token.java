@@ -10,23 +10,58 @@ package compiler;
  */
 public class Token {
 
-    private int level, scope;
+    private int typeId, level, scope, lineNum, size, counter;
     private String name, type;
-    private boolean combinable;
+    private int[] combines;
+    private int[] last;
 
-    /**
-     * This method creates a token object that contains a name, type, and
-     * whether or not it is combinable with other, specific tokens; along with
-     * some other optional data values.
-     *
-     * @param name
-     * @param type
-     * @param combinable
-     */
-    public Token(String name, String type, boolean combinable) {
+    public Token(String name, String type, int typeId, int sizeLast) {
         this.name = name;
         this.type = type;
-        this.combinable = combinable;
+        this.typeId = typeId;
+        this.size = 0;
+        /*if (sizeCombines != -1) {
+            combines = new int[sizeCombines];
+        }//*/
+        if (sizeLast>0) {
+            last = new int[sizeLast];
+        }
+    }
+
+    /**
+     * This method sets the type-id of the current token.
+     *
+     * @param typeId
+     */
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+
+    /**
+     * This method returns the type-id of the current token.
+     *
+     * @return
+     */
+    public int getTypeId() {
+        return typeId;
+    }
+
+    /**
+     * This method sets the scope of the current token.
+     *
+     * @param scope
+     */
+    public void setScope(int scope) {
+        this.scope = scope;
+    }
+
+    /**
+     * This method returns the scope of the current token.
+     *
+     * @return
+     */
+    public int getScope() {
+        return scope;
     }
 
     /**
@@ -48,21 +83,65 @@ public class Token {
     }
 
     /**
-     * This method sets the scope of the current token.
+     * This method sets the line number of the current token.
      *
-     * @param scope
+     * @param lineNum
      */
-    public void setScope(int scope) {
-        this.scope = scope;
+    public void setLineNum(int lineNum) {
+        this.lineNum = lineNum;
     }
 
     /**
-     * This method returns the scope of the current token.
+     * This method returns the line number of the current token.
      *
      * @return
      */
-    public int getScope() {
-        return scope;
+    public int getLineNum() {
+        return lineNum;
+    }
+
+    /**
+     * This method sets the size of this token.
+     *
+     * @param size
+     */
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    /**
+     * This method returns the size of this token.
+     *
+     * @return
+     */
+    public int getSize() {
+        return size;
+    }
+
+    /**
+     * This method sets counter.
+     *
+     * @param counter
+     */
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    /**
+     * This method sets the counter to zero.
+     *
+     */
+    public void resetCounter() {
+        counter = 0;
+    }
+
+    /**
+     * This method returns counter.
+     *
+     * @return
+     */
+    public int getCounter() {
+        return counter;
     }
 
     /**
@@ -102,23 +181,59 @@ public class Token {
     }
 
     /**
-     * This method sets whether or not the current token is combinable with
-     * other, specific tokens.
+     * This method adds element to combines.
      *
      * @param combinable
      */
-    public void setCombinable(boolean combinable) {
-        this.combinable = combinable;
+    public void addCombines(int combinable) {
+        combines[counter] = combinable;
+        counter++;
     }
 
     /**
-     * This method returns whether or not the current token is combinable with
-     * other, specific tokens.
+     * This method searches combines for element given, and returns element if
+     * it is found, or returns -1 if it is not found.
      *
+     * @param combinable
      * @return
      */
-    public boolean getCombinable() {
-        return combinable;
+    public int searchCombines(int combinable) {
+        int temp = -1;
+        for (int i = 0; i < combines.length; i++) {
+            if (combines[i] == combinable) {
+                temp = combinable;
+                break;
+            }
+        }
+        return temp;
+    }
+
+    /**
+     * This method adds element to last.
+     * 
+     * @param previous 
+     */
+    public void addLast(int previous) {
+        last[counter] = previous;
+        counter++;
+    }
+
+    /**
+     * This method searches last for element given, and returns element if it is
+     * found, or returns -1 if it is not found.
+     *
+     * @param previous
+     * @return
+     */
+    public int searchLast(int previous) {
+        int temp = -1;
+        for (int i = 0; i < last.length; i++) {
+            if (last[i] == previous) {
+                temp = previous;
+                break;
+            }
+        }
+        return temp;
     }
 
     /**
@@ -126,6 +241,6 @@ public class Token {
      *
      */
     public void printToken() {
-        System.out.print("\n Name: " + name + "\t Type: " + type + "\t Combinable: " + combinable + "\t Level: " + level + "\t Scope: " + scope + "\t");
+        System.out.print("\n Name: " + name + "\t Type: " + type + "\t Type-Id: " + typeId + "\t Combinable: " + combines + "\t Size: " + size + "\t Scope: " + scope + "\t Level: " + level + "\t Line Number: " + lineNum + "\t");
     }
 }

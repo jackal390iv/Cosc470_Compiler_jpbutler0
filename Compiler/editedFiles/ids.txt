@@ -8,24 +8,48 @@
 * 
 * 
 * 
-* 
+* name, type, type-id, number-of-acceptable-previous-tokens, ___, acceptable-previous-1...
 * 
 */
- ,str
-1,num
-2,num
-3,num
-4,num
-5,num
-6,num
-7,num
-8,num
-9,num
-0,num
-if,str
-=,=,<,>
-!,=
-(
-)
-then,str
-;
+DECLARE,declarations,1,___,
+BOOLEAN,data_type,2,___,
+CHAR,characters,3,___,
+NUMBER,numbers,4,___,
+SMALLINT,numbers,4,___,
+POSITIVE,numbers,4,___,
+VARCHAR2,characters_plus_bracket,5,___,
+BEGIN,compound_statements,6,___,
+END;,compound_statements,6,___,
+NULL;,optional_statements,7,___,
+DBMS_OUTPUT.NEW_LINE;,statement,8,___,
+IF BEGIN,statement,8,___,
+THEN,statement,8,___,
+END IF;,statement,8,___,
+WHILE,statement,8,___,
+LOOP,statement,8,___,
+END LOOP;,statement,8,___,
+DBMS_OUTPUT.PUT_LINE,statement_plus_bracket,9,___,
+DBMS_OUTPUT.PUT,statement_plus_bracket,9,___,
+&,statement_plus_bracket,9,___,
+TRUE,factor,10,___,
+FALSE,factor,10,___,
+NULL,factor,10,___,
+NOT,factor,10,___,
+>,relop,10,___,
+>=,relop,10,___,
+==,relop,10,___,
+<=,relop,10,___,
+<>,relop,10,___,
+<,relop,10,___,
++,addop,11,___,
+-,addop,11,___,
+*,mulop,12,___,
+/,mulop,12,___,
+%,mulop,12,___,
+(,bracket_right,13,___,
+),bracket_left,14,2,___,5,9,
+:=,equals_sign,15,5,___,2,3,4,5,17,
+;,semicolon,16,1,___,17,
+null,identifier,17,___,
+
+

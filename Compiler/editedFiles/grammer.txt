@@ -1,0 +1,243 @@
+/**
+* input by levels
+*
+*
+*
+*/
+
+//level 0
+********************************************************************************
+<block>-><declarations><compound_statement>
+
+
+
+//level 1
+********************************************************************************
+<declarations>-><DECLARE><declare_rest>
+
+
+
+//level 2
+********************************************************************************
+    //declarations' child
+    //NO CHILDREN
+<DECLARE>-><symbol>  
+
+    //declarations' child
+    //3 non-repeating children
+<declare_rest>-><identifier><type><;>|<declare_rest>        
+
+
+
+//level 3
+********************************************************************************
+    //declare_rest's child
+    //NO CHILDREN
+<identifier>-><unknown>
+
+    //declare_rest's child
+    //2 non-repeating children
+<type>-><data_type><default>  
+
+    //declare_rest's child
+    //NO CHILDREN
+<;>-><symbol>                                      
+
+
+
+//level 4
+********************************************************************************
+    //type's child
+    //casting's child
+    //3 non-repeating children
+<data_type>-><characters>|<numbers>|<BOOLEAN>  
+     
+    //type's child
+    //2 non-repeating children
+<default>-><:=><right_hand_side>    
+       
+
+
+//level 5
+********************************************************************************
+    //data_type's child
+    //3 non-repeating children
+<characters>-><CHAR>|<VARCHAR2><size>  
+          
+    //data_type's child
+    //4 non-repeating children
+<numbers>-><NUMBER><size>|<SMALLINT><size>|<POSITIVE><size> 
+  
+    //data_type's child
+    //NO CHILDREN
+<BOOLEAN>-><symbol>   
+
+    //default's child
+    //NO CHILDREN
+<:=>-><symbol>   
+
+    //default's child
+    //6 non-repeating children
+    //CHILD <2> LEVELS BELOW
+<right_hand_side>-><expression>|<'string_literal'>|<'c>|<casting><(><expression><)> 
+       
+      
+                          
+//level 6
+********************************************************************************
+    //characters' child 
+    //NO CHILDREN
+<CHAR>-><symbol> 
+
+    //characters' child
+    //NO CHILDREN
+<VARCHAR2>-><symbol>    
+
+    //characters' child
+    //numbers' child
+    //3 non-repeating children
+<size>-><(><num><)>     
+
+    //numbers' child
+    //NO CHILDREN
+<NUMBER>-><symbol>
+
+    //numbers' child
+    //NO CHILDREN
+<SMALLINT>-><symbol>
+
+    //numbers' child
+    //NO CHILDREN
+<POSITIVE>-><symbol>                                
+
+    //right_hand_side's child
+    //2 non-repeating children
+<expression>-><simple_expression>|<simple_expression><relop><simple_expression>
+
+    //right_hand_side's child
+    //NO CHILDREN
+<'string_literal'>-><unknown>
+
+    //right_hand_side's child
+    //NO CHILDREN
+<'c>-><unknown>
+
+    //right_hand_side's child
+    //1 non-repeating child
+    //CHILD <2> LEVELS ABOVE
+<casting>-><data_type>
+
+
+
+//level 7
+********************************************************************************
+    //size's child
+    //right_hand_side's child
+    //NO CHILDREN
+<(>-><symbol>   
+
+    //size's child
+    //NO CHILDREN
+<num>-><unknown> 
+
+    //size's child
+    //right_hand_side's child
+    //NO CHILDREN
+<)>-><symbol>                                   
+
+    //expression's child
+    //2 non-repeating children
+<simple_expression>-><term>|<simple_expression><addop><term>
+
+    //expression's child
+    //6 non-repeating children
+<relop>-><">">|<">=">|<"==">|<"<=">|<"<">|<"<>">
+
+
+
+//level 8
+********************************************************************************
+    //simple_expression's child
+    //2 non-repeating children
+<term>-><factor>|<term><mulop><factor>
+
+    //simple_expression's child
+    //2 non-repeating children
+<addop>-><"+">|<"-">
+
+    //relop's child
+    //NO CHILDREN
+<">">-><symbol>
+
+    //relop's child
+    //NO CHILDREN
+<">=">-><symbol>
+
+    //relop's child
+    //NO CHILDREN
+<"==">-><symbol>
+
+    //relop's child
+    //NO CHILDREN
+<"<=">-><symbol>
+
+    //relop's child
+    //NO CHILDREN
+<"<">-><symbol>
+
+    //relop's child
+    //NO CHILDREN
+<"<>">-><symbol>
+
+
+
+//level 9
+********************************************************************************
+    //term's child
+    //6 non-repeating children
+    //CHILD <6,2> LEVELS ABOVE
+<factor>-><identifier>|<num>|<TRUE>|<FALSE>|<NULL>|<NOT><factor>
+
+    //term's child
+    //3 non-repeating children
+<mulop>-><"*">|<"/">|<"%">
+
+    //addop's child
+    //NO CHILDREN
+<"+">-><symbol>
+
+    //addop's child
+    //NO CHILDREN
+<"-">-><symbol>
+
+
+
+//level 10
+********************************************************************************
+    //factor's child
+    //NO CHILDREN
+<TRUE>-><symbol>
+
+    //factor's child
+    //NO CHILDREN
+<FALSE>-><symbol>
+
+    //factor's child
+    //NO CHILDREN
+<NULL>-><symbol>
+
+    //factor's child
+    //NO CHILDREN
+<NOT>-><symbol>
+
+    //mulop's child
+    //NO CHILDREN
+<"*">-><symbol>
+
+    //mulop's child
+    //NO CHILDREN
+<"/">-><symbol>
+
+    //mulop's child
+    //NO CHILDREN
+<"%">-><symbol>
