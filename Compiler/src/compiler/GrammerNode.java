@@ -26,7 +26,7 @@ public class GrammerNode {
     public String getGrammerId() {
         return grammerId;
     }
-
+    
     public int getParentCount() {
         return parents.size();
     }
@@ -80,6 +80,10 @@ public class GrammerNode {
             temp.printChildren();
             count++;
         }
+    }
+    
+    public GrammerNode getParent(int nodeLocation){
+        return parents.get(nodeLocation);
     }
 
 }

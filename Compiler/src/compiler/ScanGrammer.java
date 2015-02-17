@@ -20,6 +20,7 @@ public class ScanGrammer {
     public ScanGrammer() {
         readGrammer();
         seperateGrammer();
+        buildReserveWordArrayList();
         GrammerCollection.printNodes();
     }
 
@@ -31,23 +32,15 @@ public class ScanGrammer {
             int parentCount = 0;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
-                if (line.startsWith("<")) {
+                if (line.startsWith("{")) {
                     for (char c : line.toCharArray()) {
                         if (c == '|') {
                             childBatchCount++;
                         }
                     }
-                    parentCount = Integer.parseInt(line.substring(1, line.indexOf(">")));
-                    line = line.substring(line.indexOf(">") + 2);
-                    element = (line.substring(0, line.indexOf(">")).trim());
-                    if (element.contains("}")) {
-                        element=element.replace("}", "<");
-                    } if (element.contains("{")) {
-                        element=element.replace("{", ">");
-                    } if (element.contains("?")) {
-                        element=element.replace("?", "-");
-                    }
-                    //System.out.println(element);
+                    parentCount = Integer.parseInt(line.substring(1, line.indexOf("}")));
+                    line = line.substring(line.indexOf("}") + 2);
+                    element = (line.substring(0, line.indexOf("}")).trim());
                     new GrammerNode(element, parentCount, childBatchCount);
                     components.add(line);
                 }
@@ -61,6 +54,7 @@ public class ScanGrammer {
             System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
             //ex.printStackTrace();
         }
+        scanner.close();
     }
 
     public void seperateGrammer() {
@@ -68,25 +62,18 @@ public class ScanGrammer {
         String temp, element;
         try {
             for (String line : components) {
-                placeHolder = GrammerCollection.getNode(line.substring(0, line.indexOf(">")).trim());
+                placeHolder = GrammerCollection.getNode(line.substring(0, line.indexOf("}")).trim());
                 if (line.contains("|")) {
                     line = line.substring(line.indexOf("|"));
                     while (line.contains("|")) {
-                        placeHolder.newChildBatch();
                         temp = line.substring(1);
+                        placeHolder.newChildBatch();
                         if (temp.contains("|")) {
                             temp = temp.substring(0, temp.indexOf("|"));
                         }
-                        while (temp.contains(">")) {
-                            element = temp.substring(temp.indexOf("<") + 1, temp.indexOf(">")).trim();
-                            temp = temp.substring(temp.indexOf(">") + 1);
-                            if (element.contains("}")) {
-                                element=element.replace("}", "<");
-                            } if (element.contains("{")) {
-                                element=element.replace("{", ">");
-                            } if (element.contains("?")) {
-                                element=element.replace("?", "-");
-                            }
+                        while (temp.contains("}")) {
+                            element = temp.substring(temp.indexOf("{") + 1, temp.indexOf("}")).trim();
+                            temp = temp.substring(temp.indexOf("}") + 1);
                             placeHolder.addToChildBatch(element);
                         }
                         line = line.substring(1);
@@ -107,6 +94,15 @@ public class ScanGrammer {
             System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
             //ex.printStackTrace();
         }
+        components.clear();
+    }
 
+    public void buildReserveWordArrayList() {
+        GrammerNode placeHolder = GrammerCollection.getNode("symbol");
+        for (int i = 0; i < placeHolder.getParentCount(); i++) {
+            components.add(placeHolder.getParent(i).getGrammerId());
+        }
+        components.remove(";");
+        components.add(";");
     }
 }
