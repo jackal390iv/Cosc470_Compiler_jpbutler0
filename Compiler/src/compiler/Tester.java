@@ -12,6 +12,7 @@ public class Tester {
 
     public static void main(String[] args) {
         GrammerCollection grammerCollection = new GrammerCollection();
+        new ScanGrammer();
         
     }
 }
