@@ -11,7 +11,7 @@ package compiler;
 public class Tester {
 
     public static void main(String[] args) {
-        TheScanner scanner = new TheScanner();
-        scanner.runScanner();
+        GrammerCollection grammerCollection = new GrammerCollection();
+        
     }
 }

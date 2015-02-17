@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class TheScanner {
 
-    private FileReader reader = null;
+    /*private FileReader reader = null;
     private ArrayList<Token> tokens = new ArrayList<Token>();
     private ArrayList<Ids> ids = new ArrayList<Ids>();
 
@@ -46,7 +46,7 @@ public class TheScanner {
             System.out.println("Cause: " + ex.getCause());
             System.out.println("Message: " + ex.getMessage());
             System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
-            //ex.printStackTrace();*/
+            //ex.printStackTrace();
         }
     }
 
@@ -74,7 +74,7 @@ public class TheScanner {
             System.out.println("Cause: " + ex.getCause());
             System.out.println("Message: " + ex.getMessage());
             System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
-            //ex.printStackTrace();*/
+            //ex.printStackTrace();
         }
     }
 
@@ -105,5 +105,5 @@ public class TheScanner {
         for (Token coin : tokens) {
             coin.printToken();
         }
-    }
+    }//*/
 }

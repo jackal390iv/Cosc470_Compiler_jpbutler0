@@ -1,25 +1,31 @@
 /**
-* input by levels
-*
+* count how many times "|" happens for child-batches count
+* "<"=={
+* ">"==}
+* "-"==?
 *
 *
 */
 
 //level 0
 ********************************************************************************
-<block>-><declarations><compound_statement>
-
+    //head node
+    //2 non-repeating children
+<0><block>-><declarations><compound_statement>
+    //parents=0
 
 
 //level 1
 ********************************************************************************
     //block's child
     //2 non-repeating children
-<declarations>-><DECLARE><declare_rest>
+<1><declarations>-><DECLARE><declare_rest>
+    //parents=1
 
     //block's child
     //3 non-repeating children
-<compound_statement>-><BEGIN><optional_statements><END;>
+<1><compound_statement>-><BEGIN><optional_statements><END;>
+    //parents=1
 
 
 
@@ -27,57 +33,70 @@
 ********************************************************************************
     //declarations' child
     //NO CHILDREN
-<DECLARE>-><symbol>  
+<1><DECLARE>-><symbol>  
+    //parents=1
 
     //declarations' child
+    //declare_rest's child
     //3 non-repeating children
-<declare_rest>-><identifier><type><;>|<declare_rest>        
+<2><declare_rest>-><identifier><type><;>|<declare_rest>    
+    //parents=2   
     
     //compound_statement's child
     //NO CHILDREN
-<BEGIN>-><symbol>
+<1><BEGIN>-><symbol>
+    //parents=1
 
     //compound_statement's child
     //4 non-repeating children
-<optional_statements>-><NULL;><;>|<statement_list><statement>|<statement_list><;><statement>
+<1><optional_statements>-><NULL;><;>|<statement_list><statement>|<statement_list><;><statement>
+    //parents=1
 
     //compound_statement's child
     //NO CHILDREN
-<END;>-><symbol>
-
+<1><END;>-><symbol>
+    //parents=1
 
 
 //level 3
 ********************************************************************************
     //declare_rest's child
     //NO CHILDREN
-<identifier>-><unknown>
+<1><identifier>-><unknown>
+    //parents=1
 
     //declare_rest's child
     //2 non-repeating children
-<type>-><data_type><default>  
+<1><type>-><data_type><default>  
+    //parents=1
 
     //declare_rest's child
     //optional_statements' child
     //statement_list's child
     //NO CHILDREN
-<;>-><symbol>                                      
+<3><;>-><symbol>        
+    //parents=3                              
 
     //optional_statements' child
     //NO CHILDREN
-<NULL;>-><symbol> 
+<1><NULL;>-><symbol> 
+    //parents=1
 
     //optional_statements' child
+    //statement_list's child
     //2 non-repeating children
     //CHILD <0> LEVELS ABOVE
-<statement_list>-><statement>|<statement_list><;><statement>
+<2><statement_list>-><statement>|<statement_list><;><statement>
+    //parents=2
 
     //optional_statements' child
     //statement_list's child
+    //statement's child
     //17 non-repeating children
     //CHILD <2> LEVELS ABOVE
     //CHILD <0,3> LEVELS BELOW
-<statement>-><left_hand_side>|<compound_statement>|<DBMS_OUTPUT.PUT_LINE><(><identifier><)><;>|<DBMS_OUTPUT.PUT><(><identifier><)><;>|<DBMS_OUTPUT.NEW_LINE;>|<&><identifier><;>|<IF BEGIN><expression><THEN><statement><END IF;>|<WHILE><expression><LOOP><statement><END LOOP;>
+<3><statement>-><left_hand_side>|<compound_statement>|<DBMS_OUTPUT.PUT_LINE><(><identifier><)><;>|<DBMS_OUTPUT.PUT><(><identifier><)><;>|<DBMS_OUTPUT.NEW_LINE;>|<&><identifier><;>|<IF BEGIN><expression><THEN><statement><END IF;>|<WHILE><expression><LOOP><statement><END LOOP;>
+    //parents=3
 
 
 
@@ -86,79 +105,99 @@
     //type's child
     //casting's child
     //3 non-repeating children
-<data_type>-><characters>|<numbers>|<BOOLEAN>  
+<2><data_type>-><characters>|<numbers>|<BOOLEAN>  
+    //parents=2
      
     //type's child
     //2 non-repeating children
-<default>-><:=><right_hand_side>    
+<1><default>-><:=><right_hand_side> 
+    //parents=1   
        
     //statement's child
     //3 non-repeating children
     //CHILD <1> LEVELS ABOVE
-<left_hand_side>-><identifier><:=><right_hand_side>
+<1><left_hand_side>-><identifier><:=><right_hand_side>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<DBMS_OUTPUT.PUT_LINE>-><symbol>
+<1><DBMS_OUTPUT.PUT_LINE>-><symbol>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<DBMS_OUTPUT.PUT>-><symbol>
+<1><DBMS_OUTPUT.PUT>-><symbol>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<DBMS_OUTPUT.NEW_LINE;>-><symbol>
+<1><DBMS_OUTPUT.NEW_LINE;>-><symbol>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<&>-><symbol>
+<1><&>-><symbol>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<IF BEGIN>-><symbol>
+<1><IF BEGIN>-><symbol>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<THEN>-><symbol>
+<1><THEN>-><symbol>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<END IF;>-><symbol>
+<1><END IF;>-><symbol>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<WHILE>-><symbol>
+<1><WHILE>-><symbol>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<LOOP>-><symbol>
+<1><LOOP>-><symbol>
+    //parents=1
 
     //statement's child
     //NO CHILDREN
-<END LOOP;>-><symbol>
+<1><END LOOP;>-><symbol>
+    //parents=1
+
+
 
 //level 5
 ********************************************************************************
     //data_type's child
     //3 non-repeating children
-<characters>-><CHAR>|<VARCHAR2><size>  
+<1><characters>-><CHAR>|<VARCHAR2><size>  
+    //parents=1
           
     //data_type's child
     //4 non-repeating children
-<numbers>-><NUMBER><size>|<SMALLINT><size>|<POSITIVE><size> 
+<1><numbers>-><NUMBER><size>|<SMALLINT><size>|<POSITIVE><size> 
+    //parents=1
   
     //data_type's child
     //NO CHILDREN
-<BOOLEAN>-><symbol>   
+<1><BOOLEAN>-><symbol>  
+    //parents=1 
 
     //default's child
     //NO CHILDREN
-<:=>-><symbol>   
+<1><:=>-><symbol>   
+    //parents=1
 
     //default's child
     //6 non-repeating children
     //CHILD <2> LEVELS BELOW
-<right_hand_side>-><expression>|<'string_literal'>|<'c>|<casting><(><expression><)> 
+<1><right_hand_side>-><expression>|<'string_literal'>|<'c>|<casting><(><expression><)> 
+    //parents=1
        
       
                           
@@ -166,45 +205,55 @@
 ********************************************************************************
     //characters' child 
     //NO CHILDREN
-<CHAR>-><symbol> 
+<1><CHAR>-><symbol> 
+    //parents=1
 
     //characters' child
     //NO CHILDREN
-<VARCHAR2>-><symbol>    
+<1><VARCHAR2>-><symbol>    
+    //parents=1
 
     //characters' child
     //numbers' child
     //3 non-repeating children
-<size>-><(><num><)>     
+<2><size>-><(><num><)>   
+    //parents=2  
 
     //numbers' child
     //NO CHILDREN
-<NUMBER>-><symbol>
+<1><NUMBER>-><symbol>
+    //parents=1
 
     //numbers' child
     //NO CHILDREN
-<SMALLINT>-><symbol>
+<1><SMALLINT>-><symbol>
+    //parents=1
 
     //numbers' child
     //NO CHILDREN
-<POSITIVE>-><symbol>                                
+<1><POSITIVE>-><symbol>  
+    //parents=1                              
 
     //right_hand_side's child
     //2 non-repeating children
-<expression>-><simple_expression>|<simple_expression><relop><simple_expression>
+<1><expression>-><simple_expression>|<simple_expression><relop><simple_expression>
+    //parents=1
 
     //right_hand_side's child
     //NO CHILDREN
-<'string_literal'>-><unknown>
+<1><'string_literal'>-><unknown>
+    //parents=1
 
     //right_hand_side's child
     //NO CHILDREN
-<'c>-><unknown>
+<1><'c>-><unknown>
+    //parents=1
 
     //right_hand_side's child
     //1 non-repeating child
     //CHILD <2> LEVELS ABOVE
-<casting>-><data_type>
+<1><casting>-><data_type>
+    //parents=1
 
 
 
@@ -213,81 +262,101 @@
     //size's child
     //right_hand_side's child
     //NO CHILDREN
-<(>-><symbol>   
+<2><(>-><symbol>   
+    //parents=2
 
     //size's child
     //NO CHILDREN
-<num>-><unknown> 
+<1><num>-><unknown> 
+    //parents=1
 
     //size's child
     //right_hand_side's child
     //NO CHILDREN
-<)>-><symbol>                                   
+<2><)>-><symbol>      
+    //parents=2                             
 
     //expression's child
+    //simple_expression's child
     //2 non-repeating children
-<simple_expression>-><term>|<simple_expression><addop><term>
+<2><simple_expression>-><term>|<simple_expression><addop><term>
+    //parents=2
 
     //expression's child
     //6 non-repeating children
-<relop>-><">">|<">=">|<"==">|<"<=">|<"<">|<"<>">
+<1><relop>-><}>|<}=>|<==>|<{=>|<{>|<{}>
+    //parents=1
 
 
 
 //level 8
 ********************************************************************************
     //simple_expression's child
+    //term's child
     //2 non-repeating children
-<term>-><factor>|<term><mulop><factor>
+<2><term>-><factor>|<term><mulop><factor>
+    //parents=2
 
     //simple_expression's child
     //2 non-repeating children
-<addop>-><"+">|<"-">
+<1><addop>-><+>|<?>
+    //parents=1
 
     //relop's child
     //NO CHILDREN
-<">">-><symbol>
+<1><}>-><symbol>
+    //parents=1
 
     //relop's child
     //NO CHILDREN
-<">=">-><symbol>
+<1><}=>-><symbol>
+    //parents=1
 
     //relop's child
     //NO CHILDREN
-<"==">-><symbol>
+<1><==>-><symbol>
+    //parents=1
 
     //relop's child
     //NO CHILDREN
-<"<=">-><symbol>
+<1><{=>-><symbol>
+    //parents=1
 
     //relop's child
     //NO CHILDREN
-<"<">-><symbol>
+<1><{>-><symbol>
+    //parents=1
 
     //relop's child
     //NO CHILDREN
-<"<>">-><symbol>
+<1><{}>-><symbol>
+    //parents=1
 
 
 
 //level 9
 ********************************************************************************
     //term's child
+    //factor's child
     //6 non-repeating children
     //CHILD <6,2> LEVELS ABOVE
-<factor>-><identifier>|<num>|<TRUE>|<FALSE>|<NULL>|<NOT><factor>
+<2><factor>-><identifier>|<num>|<TRUE>|<FALSE>|<NULL>|<NOT><factor>
+    //parents=2
 
     //term's child
     //3 non-repeating children
-<mulop>-><"*">|<"/">|<"%">
+<1><mulop>-><*>|</>|<%>
+    //parents=1
 
     //addop's child
     //NO CHILDREN
-<"+">-><symbol>
+<1><+>-><symbol>
+    //parents=1
 
     //addop's child
     //NO CHILDREN
-<"-">-><symbol>
+<1><?>-><symbol>
+    //parents=1
 
 
 
@@ -295,28 +364,35 @@
 ********************************************************************************
     //factor's child
     //NO CHILDREN
-<TRUE>-><symbol>
+<1><TRUE>-><symbol>
+    //parents=1
 
     //factor's child
     //NO CHILDREN
-<FALSE>-><symbol>
+<1><FALSE>-><symbol>
+    //parents=1
 
     //factor's child
     //NO CHILDREN
-<NULL>-><symbol>
+<1><NULL>-><symbol>
+    //parents=1
 
     //factor's child
     //NO CHILDREN
-<NOT>-><symbol>
+<1><NOT>-><symbol>
+    //parents=1
 
     //mulop's child
     //NO CHILDREN
-<"*">-><symbol>
+<1><*>-><symbol>
+    //parents=1
 
     //mulop's child
     //NO CHILDREN
-<"/">-><symbol>
+<1></>-><symbol>
+    //parents=1
 
     //mulop's child
     //NO CHILDREN
-<"%">-><symbol>
+<1><%>-><symbol>
+    //parents=1
