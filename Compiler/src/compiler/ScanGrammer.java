@@ -91,6 +91,10 @@ public class ScanGrammer {
         for (int i = 0; i < placeHolder.getParentCount(); i++) {
             reserve.add(placeHolder.getParent(i).getGrammerId());
         }
+        //End-line symbol must be placed at the bottom of the reserve word list; 
+        //along with rearanging any reserve words that require presedence of other reserve words
+        reserve.remove(";");
+        reserve.add(";");
     }
 
     public static void printReserveWords() {

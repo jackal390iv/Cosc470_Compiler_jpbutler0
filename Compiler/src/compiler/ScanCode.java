@@ -26,23 +26,49 @@ public class ScanCode {
     private void readCode() {
         try {
             scanner = new Scanner(new File("./editedFiles/codeV1.txt"));
-            String line, holder;
-            while (scanner.hasNext()) {
-                line = scanner.next();
-                holder = line;
-                for (int i = 0; i < line.length(); i++) {
-                    for (String temp : ScanGrammer.getReserveWords()) {
-                        if (holder.contains(temp)) {
-                            if (!(holder.substring(0, holder.indexOf(temp)).isEmpty())) {
-                                list.add(holder.substring(0, holder.indexOf(temp)));
-                            }
-                            list.add(temp);
-                            holder = holder.substring(holder.indexOf(temp) + temp.length());
-                        }
+            String holder, line;
+            boolean multiLineComment = false;
+            String[] checker;
+            while (scanner.hasNextLine()) {
+                line = scanner.nextLine();
+                if (multiLineComment == true) {
+                    if (line.contains("*/")) {
+                        line = line.substring(line.indexOf("*/") + 2, line.length());
+                        multiLineComment = false;
+                    } else {
+                        line = "";
                     }
                 }
-                if (holder.length() > 0) {
-                    list.add(holder);
+                if (line.contains("--")) {
+                    line = line.substring(0, line.indexOf("--"));
+                }
+                if (line.contains("/*")) {
+                    line = line.substring(0, line.indexOf("/*"));
+                    multiLineComment = true;
+                }
+                checker = line.split(" ");
+                for (String element : checker) {
+                    element = element.trim();
+                    if (!(element.equals(""))) {
+                        holder = element;
+                        for (int i = 0; i < element.length(); i++) {
+                            for (String temp : ScanGrammer.getReserveWords()) {
+                                if (holder.contains(temp)) {
+                                    if (!(holder.substring(0, holder.indexOf(temp)).isEmpty())) {
+                                        //System.out.println("Before Cut: "+holder.substring(0, holder.indexOf(temp)));
+                                        list.add(holder.substring(0, holder.indexOf(temp)));
+                                    }
+                                    //System.out.println("After Cut: "+temp);
+                                    list.add(temp);
+                                    holder = holder.substring(holder.indexOf(temp) + temp.length());
+                                }
+                            }
+                        }
+                        if (holder.length() > 0) {
+                            //System.out.println("Holder: "+holder);
+                            list.add(holder);
+                        }
+                    }
                 }
             }
             scanner.close();
