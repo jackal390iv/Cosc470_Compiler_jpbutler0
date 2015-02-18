@@ -13,7 +13,13 @@ public class ParseCode {
     public ParseCode(){
         //GrammerCollection.printNodes();        
         //ScanGrammer.printReserveWords();
-        ScanCode.printCodeList();
+        //ScanCode.printCodeList();
+    }
+    
+    public void defineTypes(){
+        for(String element:ScanCode.getCodeList()){
+            
+        }
     }
     
 }

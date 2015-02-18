@@ -12,8 +12,8 @@ public class Tester {
 
     public static void main(String[] args) {
         GrammerCollection grammerCollection = new GrammerCollection();
-        ScanGrammer scanGrammer = new ScanGrammer();
-        ScanCode scanCode = new ScanCode();
+        ScanGrammer scanGrammer = new ScanGrammer("./editedFiles/grammer.txt");
+        ScanCode scanCode = new ScanCode("./editedFiles/codeV1.txt");
         ParseCode parseCode = new ParseCode();
     }
 }
