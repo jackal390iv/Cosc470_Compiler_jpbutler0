@@ -1,0 +1,7 @@
+DECLARE
+    my_vchar    VARCHAR2(6);
+    my_bool     BOOLEAN ;
+    total       SMALLINT     (  3    )  ;
+BEGIN
+    NULL;
+END;\

@@ -12,7 +12,12 @@ public class Tester {
 
     public static void main(String[] args) {
         GrammerCollection grammerCollection = new GrammerCollection();
-        new ScanGrammer();
+        ScanGrammer scanGrammer = new ScanGrammer();
+        ScanCode scanCode = new ScanCode();
+        //grammerCollection.printNodes();        
+        //scanGrammer.printReserveWords();
+        scanCode.printCodeList();
         
+
     }
 }

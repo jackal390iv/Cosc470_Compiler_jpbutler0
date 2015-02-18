@@ -15,36 +15,27 @@ import java.util.Scanner;
 public class ScanGrammer {
 
     private Scanner scanner;
-    private ArrayList<String> components = new ArrayList<String>();
+    private static ArrayList<String> reserve;
 
     public ScanGrammer() {
+        reserve = new ArrayList<String>();
         readGrammer();
         seperateGrammer();
-        buildReserveWordArrayList();
-        GrammerCollection.printNodes();
+        buildReserveWordList();
     }
 
-    public void readGrammer() {
+    private void readGrammer() {
         try {
             scanner = new Scanner(new File("./editedFiles/grammer.txt"));
-            String line, element;
-            int childBatchCount = 0;
-            int parentCount = 0;
+            String line;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
                 if (line.startsWith("{")) {
-                    for (char c : line.toCharArray()) {
-                        if (c == '|') {
-                            childBatchCount++;
-                        }
-                    }
-                    parentCount = Integer.parseInt(line.substring(1, line.indexOf("}")));
-                    line = line.substring(line.indexOf("}") + 2);
-                    element = (line.substring(0, line.indexOf("}")).trim());
-                    new GrammerNode(element, parentCount, childBatchCount);
-                    components.add(line);
+                    new GrammerNode(line.substring(1, line.indexOf("}")).trim());
+                    reserve.add(line);
                 }
             }
+            scanner.close();
         } catch (Exception ex) {
             System.out.println("\n" + "ERROR");
             System.out.println("Type: " + ex.getClass().getName());
@@ -54,15 +45,14 @@ public class ScanGrammer {
             System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
             //ex.printStackTrace();
         }
-        scanner.close();
     }
 
-    public void seperateGrammer() {
+    private void seperateGrammer() {
         GrammerNode placeHolder;
         String temp, element;
         try {
-            for (String line : components) {
-                placeHolder = GrammerCollection.getNode(line.substring(0, line.indexOf("}")).trim());
+            for (String line : reserve) {
+                placeHolder = GrammerCollection.getNode(line.substring(1, line.indexOf("}")).trim());
                 if (line.contains("|")) {
                     line = line.substring(line.indexOf("|"));
                     while (line.contains("|")) {
@@ -84,7 +74,7 @@ public class ScanGrammer {
                     }
                 }
             }
-
+            reserve.clear();
         } catch (Exception ex) {
             System.out.println("\n" + "ERROR");
             System.out.println("Type: " + ex.getClass().getName());
@@ -94,15 +84,22 @@ public class ScanGrammer {
             System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
             //ex.printStackTrace();
         }
-        components.clear();
     }
 
-    public void buildReserveWordArrayList() {
+    private void buildReserveWordList() {
         GrammerNode placeHolder = GrammerCollection.getNode("symbol");
         for (int i = 0; i < placeHolder.getParentCount(); i++) {
-            components.add(placeHolder.getParent(i).getGrammerId());
+            reserve.add(placeHolder.getParent(i).getGrammerId());
         }
-        components.remove(";");
-        components.add(";");
+    }
+
+    public static void printReserveWords() {
+        for (String temp : reserve) {
+            System.out.println(temp);
+        }
+    }
+
+    public static ArrayList<String> getReserveWords() {
+        return reserve;
     }
 }

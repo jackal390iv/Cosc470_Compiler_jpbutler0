@@ -31,8 +31,18 @@ public class GrammerCollection {
         for (String key : grammerNodes.keySet()) {
             System.out.printf("\n\n\nHashMap Key: %-50sGrammer Id: %-50sChild Batch Count: %-50dParent Count: %-50d\n", key, grammerNodes.get(key).getGrammerId(), grammerNodes.get(key).getChildBatchCount(), grammerNodes.get(key).getParentCount());
             grammerNodes.get(key).printParents();
-           grammerNodes.get(key).printChildBatches();
+            grammerNodes.get(key).printChildBatches();
         }
     }
-    
+
+    public static void printSelfPointerNodes() {
+        for (String key : grammerNodes.keySet()) {
+            if (grammerNodes.get(key).doesPointsToSelf()) {
+                System.out.printf("\n\n\nHashMap Key: %-50sGrammer Id: %-50sChild Batch Count: %-50dParent Count: %-50d\n", key, grammerNodes.get(key).getGrammerId(), grammerNodes.get(key).getChildBatchCount(), grammerNodes.get(key).getParentCount());
+                grammerNodes.get(key).printParents();
+                grammerNodes.get(key).printChildBatches();
+            }
+        }
+    }
+
 }
