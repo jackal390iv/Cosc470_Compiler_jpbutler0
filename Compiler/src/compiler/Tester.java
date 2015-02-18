@@ -14,10 +14,6 @@ public class Tester {
         GrammerCollection grammerCollection = new GrammerCollection();
         ScanGrammer scanGrammer = new ScanGrammer();
         ScanCode scanCode = new ScanCode();
-        //grammerCollection.printNodes();        
-        //scanGrammer.printReserveWords();
-        scanCode.printCodeList();
-        
-
+        ParseCode parseCode = new ParseCode();
     }
 }

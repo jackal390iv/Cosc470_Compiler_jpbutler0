@@ -25,7 +25,7 @@ public class ScanCode {
 
     private void readCode() {
         try {
-            scanner = new Scanner(new File("./editedFiles/reserveWordTester.txt"));
+            scanner = new Scanner(new File("./editedFiles/codeV1.txt"));
             String line, holder;
             while (scanner.hasNext()) {
                 line = scanner.next();
