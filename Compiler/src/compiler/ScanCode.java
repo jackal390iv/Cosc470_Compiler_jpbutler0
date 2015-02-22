@@ -26,7 +26,7 @@ public class ScanCode {
         this.codeTextLocation = codeTextLocation;
         readCode();
         prepCode();
-        printList();
+        //printList();
     }
 
     /**
@@ -77,6 +77,7 @@ public class ScanCode {
 
     private void prepCode() {
         String element;
+        int counter,clicker;
         String[] holder;
         for (int i = 0; i < list.size(); i++) {
             while ((list.get(i).contains(" ")) && (!(list.get(i).isEmpty()))) {
@@ -100,6 +101,36 @@ public class ScanCode {
                 }
             }
         }
+
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (!(list.get(i).isEmpty())) {
+                for (int k = 0; k < TheCollector.getRegualarCombinables().size(); k++) {
+                    counter = 0;
+                    element = list.get(i);
+                    while ((TheCollector.getRegualarCombinables().get(k).contains(element)) && (!(TheCollector.getRegualarCombinables().get(k).equals(element)))) {
+                        holder = new String[]{TheCollector.getRegualarCombinables().get(k).substring(0, TheCollector.getRegualarCombinables().get(k).indexOf(element)), element, TheCollector.getRegualarCombinables().get(k).substring(TheCollector.getRegualarCombinables().get(k).indexOf(element) + element.length(), TheCollector.getRegualarCombinables().get(k).length())};
+                        counter++;
+                        if((i+counter==list.size())||(list.get(i+counter).isEmpty())){
+                            element="";
+                            break;
+                        }else if ((!(holder[2].isEmpty())) && (holder[2].contains(list.get(i + counter)))) {
+                            element=element+list.get(i+counter);
+                        }                        
+                    }
+                    if (TheCollector.getRegualarCombinables().get(k).equals(element)) {
+                        clicker=0;    
+                        while(clicker!=counter+1){
+                            list.remove(i);
+                            clicker++;
+                        }
+                        list.add(i,element);
+                    }
+                }
+            }
+        }
+        
+        printList();
+        
     }
 
     private void printList() {
