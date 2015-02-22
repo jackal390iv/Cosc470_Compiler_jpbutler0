@@ -9,17 +9,21 @@ package compiler;
  * @author Jonathan Butler <https://github.com/jackal390iv>
  */
 public class ParseCode {
-    
-    public ParseCode(){
-        //GrammerCollection.printNodes();        
-        //ScanGrammer.printReserveWords();
-        //ScanCode.printCodeList();
+
+    public ParseCode() {
+        //TheCollection.printNodes();        
+        //TheCollector.printReserveWords();
+        //TheCollector.printUnknownList();
+        //TheCollector.printReserveWordsMinusCombinables();
+        //TheCollector.printSpacedCombinables();
+        //TheCollector.printRegularCombinables();
+        //TheCollector.printCodeList();
     }
-    
-    public void defineTypes(){
-        for(String element:ScanCode.getCodeList()){
-            
-        }
+
+    public void defineTypes() {
+        //for(String element:ScanCode.getCodeList()){
+
+        //}
     }
-    
+
 }

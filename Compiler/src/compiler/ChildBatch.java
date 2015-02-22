@@ -12,16 +12,16 @@ import java.util.ArrayList;
  */
 public class ChildBatch {
 
-    private ArrayList<GrammerNode> children;
+    private ArrayList<GrammarNode> children;
 
     public ChildBatch() {
-        children = new ArrayList<GrammerNode>();
+        children = new ArrayList<GrammarNode>();
     }
 
-    public void addChildToCurrentBatch(GrammerNode currentId, String childId) {
+    public void addChildToCurrentBatch(GrammarNode currentId, String childId) {
         try {
-            children.add(GrammerCollection.getNode(childId));
-            GrammerCollection.getNode(childId).addParent(currentId);
+            children.add(TheCollector.getNode(childId));
+            TheCollector.getNode(childId).addParent(currentId);
         } catch (Exception ex) {
             System.out.println("\n" + "ERROR");
             System.out.println("Type: " + ex.getClass().getName());
@@ -35,8 +35,8 @@ public class ChildBatch {
 
     public void printChildren() {
         int count = 1;
-        for (GrammerNode temp : children) {
-            System.out.printf("Child %d: %-50s", count, temp.getGrammerId());
+        for (GrammarNode temp : children) {
+            System.out.printf("Child %d: %-50s", count, temp.getGrammarId());
             count++;
         }
     }

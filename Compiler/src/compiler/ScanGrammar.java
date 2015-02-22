@@ -27,37 +27,52 @@ import java.util.Scanner;
  *
  * @author Jonathan Butler <https://github.com/jackal390iv>
  */
-public class ScanGrammer {
+public class ScanGrammar {
 
     private Scanner scanner;
     private String grammarTextLocation;
-    private static ArrayList<String> reserve;
+    private ArrayList<String> grammarLines;
 
-    public ScanGrammer(String grammarTextLocation) {
-        reserve = new ArrayList<String>();
+    public ScanGrammar(String grammarTextLocation) {
         this.grammarTextLocation = grammarTextLocation;
-        readGrammer();
-        seperateGrammer();
-        buildReserveWordList();
+        grammarLines = new ArrayList<String>();
+        readGrammar();
+        seperateGrammar();
+        buildCombinableWordList();
     }
 
     /**
-     * This method reads in a grammar text file and creates a 'GrammerNode' for
-     * each grammar element within 'GrammerCollection'. While doing so this
+     * This method reads in a grammar text file and creates a 'GrammarNode' for
+     * each grammar element within 'GrammarCollection'. While doing so this
      * method add each grammar element line temporarily into the 'reserve'
      * ArrayList. The temporary 'reserve' list created will then be run through
-     * the 'separateGrammer' method.
+     * the 'separateGrammar' method.
      *
      */
-    private void readGrammer() {
+    private void readGrammar() {
         try {
             scanner = new Scanner(new File(grammarTextLocation));
-            String line;
+            String line, temp;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
                 if (line.startsWith("{")) {
-                    new GrammerNode(line.substring(1, line.indexOf("}")).trim());
-                    reserve.add(line);
+                    temp = line.substring(1, line.indexOf("}")).trim();
+                    if (temp.equals("COMMENT_SYMBOL")) {
+                        temp=line.substring(line.indexOf("|")+2);
+                        temp=temp.substring(0,temp.indexOf("}")).trim();
+                        TheCollector.setCommentSymbol(temp);
+                    } else if (temp.equals("COMMENT_BLOCK_START_SYMBOL")) {
+                        temp=line.substring(line.indexOf("|")+2);
+                        temp=temp.substring(0,temp.indexOf("}")).trim();
+                        TheCollector.setCommentBlockStartSymbol(temp);
+                    } else if (temp.equals("COMMENT_BLOCK_END_SYMBOL")) {
+                        temp=line.substring(line.indexOf("|")+2);
+                        temp=temp.substring(0,temp.indexOf("}")).trim();
+                        TheCollector.setCommentBlockEndSymbol(temp);
+                    } else {
+                        new GrammarNode(temp);
+                        grammarLines.add(line);
+                    }
                 }
             }
             scanner.close();
@@ -78,12 +93,12 @@ public class ScanGrammer {
      * element.
      *
      */
-    private void seperateGrammer() {
-        GrammerNode placeHolder;
+    private void seperateGrammar() {
+        GrammarNode placeHolder;
         String temp, element;
         try {
-            for (String line : reserve) {
-                placeHolder = GrammerCollection.getNode(line.substring(1, line.indexOf("}")).trim());
+            for (String line : grammarLines) {
+                placeHolder = TheCollector.getNode(line.substring(1, line.indexOf("}")).trim());
                 if (line.contains("|")) {
                     line = line.substring(line.indexOf("|"));
                     while (line.contains("|")) {
@@ -105,7 +120,7 @@ public class ScanGrammer {
                     }
                 }
             }
-            reserve.clear();
+            grammarLines.clear();
         } catch (Exception ex) {
             System.out.println("\n" + "ERROR");
             System.out.println("Type: " + ex.getClass().getName());
@@ -117,39 +132,19 @@ public class ScanGrammer {
         }
     }
 
-    /**
-     * This method adds all grammar reserve words to the 'reserve' ArrayList.
-     *
-     */
-    private void buildReserveWordList() {
-        GrammerNode placeHolder = GrammerCollection.getNode("symbol");
-        for (int i = 0; i < placeHolder.getParentCount(); i++) {
-            reserve.add(placeHolder.getParent(i).getGrammerId());
+    private void buildCombinableWordList() {
+        for (String tester : TheCollector.getReserveWords()) {
+            for (String checker : TheCollector.getReserveWords()) {
+                if (((tester.contains(checker)) && (!(tester.equals(checker)))) || (tester.contains(" "))) {
+                    if (tester.contains(" ")) {
+                        TheCollector.addSpacedCombinable(tester);
+                    } else {
+                        TheCollector.addRegualarCombinable(tester);
+                    }
+                    break;
+                }
+            }
         }
-        //End-line symbol must be placed at the bottom of the reserve word list; 
-        //along with rearanging any reserve words that require presedence of other reserve words
-        reserve.remove(";");
-        reserve.add(";");
-    }
-
-    /**
-     * This method prints all grammar reserve words that are held in the
-     * 'reserve' ArrayList.
-     *
-     */
-    public static void printReserveWords() {
-        for (String temp : reserve) {
-            System.out.println(temp);
-        }
-    }
-
-    /**
-     * This method returns the ArrayList 'reserve' which contains all reserve
-     * words as designated by the grammar.
-     *
-     * @return
-     */
-    public static ArrayList<String> getReserveWords() {
-        return reserve;
+        TheCollector.createReserveWordsMinusCombinables();
     }
 }

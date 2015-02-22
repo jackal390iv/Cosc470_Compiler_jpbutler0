@@ -1,0 +1,17 @@
+DECLARE
+    my_vchar    VARCHAR2(6);    --this should not be here
+    my_bool     BOOLEAN ;   /*
+this should not be here
+--hello
+    this should /* not be here ***
+
+this should not be here*/    total       SMALLINT     (  3    )  ;
+BEGIN
+    IF BEGIN
+    IFBEGIN
+        END IF;
+        ENDIF;
+        DBMS_OUTPUT.PUT_LINE
+        DBMS_OUTPUT.PUT _LINE
+    NULL;
+END;\

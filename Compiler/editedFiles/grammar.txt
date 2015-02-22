@@ -7,7 +7,7 @@
 //********************************************************************************
     //head node
     //2 non-repeating children
-{block}-}{declarations}{compound_statement}{\}
+{block}-}|{declarations}{compound_statement}{\}
     //parents=0
 
     //declaration's child
@@ -17,16 +17,11 @@
 {empty}-}
     //parents=4
 
-    //A LOT OF PARENTS
-{symbol}-}
-    //parents=39
+{COMMENT_SYMBOL}-}|{--}
 
-    //identifier's child
-    //'string_literal's' child
-    //'c's' child
-    //num's child
-{unknown}-}
-    //parents=4
+{COMMENT_BLOCK_START_SYMBOL}-}|{/*}
+
+{COMMENT_BLOCK_END_SYMBOL}-}|{*/}
 
     //block's child
     //1 non-repeating child
@@ -93,7 +88,7 @@
     //optional_statements' child
     //statement_list's child
     //NO CHILDREN
-{;}-}|{symbol}        
+{;}-}|{symbol_END_LINE}        
     //parents=3                              
 
     //optional_statements' child

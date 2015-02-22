@@ -10,29 +10,28 @@ import java.util.ArrayList;
  *
  * @author Jonathan Butler <https://github.com/jackal390iv>
  */
-public class GrammerNode {
+public class GrammarNode {
 
     //isReserve means that the node is a reserve word, an unknown, or empty. This includes all bottom most elements in the tree
     //activeNode means that the node is a reserve word or an unknown word and that it is being used in the code. Any empty word nodes are automatically seen as activeNode = true
-    private boolean activeNode, isReserve, pointsToSelf;
-    private String grammerId, nodeValue;
+    private boolean isReserveWord, doesPointToSelf;
+    private String grammarId, nodeValue;
     int parentCount, childBatchCount;
-    private ArrayList<GrammerNode> parents;
+    private ArrayList<GrammarNode> parents;
     private ArrayList<ChildBatch> batchesOfChildren;
 
-    public GrammerNode(String grammerId) {
-        this.grammerId = grammerId;
+    public GrammarNode(String grammarId) {
+        this.grammarId = grammarId;
         this.nodeValue = null;    //node values are originally set to null for all nodes
-        activeNode = false;
-        isReserve = false;
-        pointsToSelf = false;
-        parents = new ArrayList<GrammerNode>();
+        isReserveWord = false;
+        doesPointToSelf = false;
+        parents = new ArrayList<GrammarNode>();
         batchesOfChildren = new ArrayList<ChildBatch>();
-        GrammerCollection.addNode(grammerId, this);
+        TheCollector.addNode(grammarId, this);
     }
 
-    public String getGrammerId() {
-        return grammerId;
+    public String getGrammarId() {
+        return grammarId;
     }
 
     public void setNodeValue(String nodeValue) {
@@ -44,23 +43,11 @@ public class GrammerNode {
     }
 
     public boolean doesPointsToSelf() {
-        return pointsToSelf;
-    }
-
-    public void setNodeToActive() {
-        activeNode = true;
-    }
-
-    public void setNodeToDead() {
-        activeNode = false;
-    }
-
-    public boolean isNodeActive() {
-        return activeNode;
+        return doesPointToSelf;
     }
 
     public boolean isReserveOrUnknownWord() {
-        return isReserve;
+        return isReserveWord;
     }
 
     public int getParentCount() {
@@ -71,10 +58,10 @@ public class GrammerNode {
         return batchesOfChildren.size();
     }
 
-    public void addParent(GrammerNode parentId) {
+    public void addParent(GrammarNode parentId) {
         boolean exists = false;
-        for (GrammerNode temp : parents) {
-            if (temp.getGrammerId().equals(parentId.getGrammerId())) {
+        for (GrammarNode temp : parents) {
+            if (temp.getGrammarId().equals(parentId.getGrammarId())) {
                 exists = true;
             }
         }
@@ -85,15 +72,19 @@ public class GrammerNode {
 
     public void addToChildBatch(String childId) {
         try {
-            batchesOfChildren.get(batchesOfChildren.size() - 1).addChildToCurrentBatch(this, childId);
-            if ((childId.equals("symbol")) | (childId.equals("unknown")) | (childId.equals("empty"))) {
-                if (childId.equals("empty")) {
-                    activeNode = true;
+            if (childId.equals("symbol")) {
+                TheCollector.addReserveWord(grammarId, false);
+                isReserveWord = true;
+            } else if (childId.equals("symbol_END_LINE")) {
+                TheCollector.addReserveWord(grammarId, true);
+                isReserveWord = true;
+            } else if (childId.equals("unknown")) {
+                TheCollector.addUnknow(grammarId);
+            } else {
+                if (childId.equals(grammarId)) {
+                    doesPointToSelf = true;
                 }
-                isReserve = true;
-            }
-            if (childId.equals(grammerId)) {
-                pointsToSelf = true;
+                batchesOfChildren.get(batchesOfChildren.size() - 1).addChildToCurrentBatch(this, childId);
             }
         } catch (Exception ex) {
             System.out.println("\n" + "ERROR");
@@ -113,8 +104,8 @@ public class GrammerNode {
 
     public void printParents() {
         int count = 1;
-        for (GrammerNode temp : parents) {
-            System.out.printf("Parent %d: %-50s", count, temp.getGrammerId());
+        for (GrammarNode temp : parents) {
+            System.out.printf("Parent %d: %-50s", count, temp.getGrammarId());
             count++;
         }
     }
@@ -128,7 +119,7 @@ public class GrammerNode {
         }
     }
 
-    public GrammerNode getParent(int nodeLocation) {
+    public GrammarNode getParent(int nodeLocation) {
         return parents.get(nodeLocation);
     }
 
