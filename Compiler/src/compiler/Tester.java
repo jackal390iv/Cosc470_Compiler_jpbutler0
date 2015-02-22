@@ -12,7 +12,7 @@ public class Tester {
 
     public static void main(String[] args) {
         TheCollector grammarCollection = new TheCollector();
-        ScanGrammar scanGrammar = new ScanGrammar("./editedFiles/grammar.txt");       
+        ScanGrammar scanGrammar = new ScanGrammar("./editedFiles/grammar.txt"); 
         ScanCode scanCode = new ScanCode("./editedFiles/codeReadTester.txt");
         //ParseCode parseCode = new ParseCode();
     }

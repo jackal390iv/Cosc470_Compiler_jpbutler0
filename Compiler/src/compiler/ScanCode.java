@@ -25,9 +25,8 @@ public class ScanCode {
         list = new ArrayList<String>();
         this.codeTextLocation = codeTextLocation;
         readCode();
+        prepCode();
         printList();
-        //fixSpecialCharacters();
-        
     }
 
     /**
@@ -40,9 +39,8 @@ public class ScanCode {
     private void readCode() {
         try {
             scanner = new Scanner(new File(codeTextLocation));
-            String holder, line;
+            String line;
             boolean multiLineComment = false;
-            String[] checker;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
                 //This section of this method checks for pre-existing multi-Line comments and removes them; designated in our current grammar as '/*' to '*/'
@@ -63,35 +61,7 @@ public class ScanCode {
                     line = line.substring(0, line.indexOf(TheCollector.getCommentBlockStartSymbol()));
                     multiLineComment = true;
                 }
-                //This section of this method splits the line by spaces into an array 
-                checker = line.split(" ");
-                for (String element : checker) {
-                    element = element.trim();
-                    //This section of the method checks if the array element in question is empty; if it is not, the element continues to the seperator 
-                    if (element.equals("")) {
-                        //list.add(" ");
-                    }else{
-                        holder = element;
-                        //This section of the method is the seperator; it's job is to seperate element by use of the reserve words list, and store said element/elements into the 'list' ArrayList 
-                        for (int i = 0; i < element.length(); i++) {
-                            for (String temp : TheCollector.getReserveWordsMinusCombinables()) {
-                                if (holder.contains(temp)) {
-                                    if (!(holder.substring(0, holder.indexOf(temp)).isEmpty())) {
-                                        //System.out.println("Before Cut: "+holder.substring(0, holder.indexOf(temp)));
-                                        list.add(holder.substring(0, holder.indexOf(temp)));
-                                    }
-                                    //System.out.println("After Cut: "+temp);
-                                    list.add(temp);
-                                    holder = holder.substring(holder.indexOf(temp) + temp.length());
-                                }
-                            }
-                        }
-                        if (holder.length() > 0) {
-                            //System.out.println("Holder: "+holder);
-                            list.add(holder);
-                        }
-                    }
-                }
+                list.add(line.trim());
             }
             scanner.close();
         } catch (Exception ex) {
@@ -104,10 +74,14 @@ public class ScanCode {
             //ex.printStackTrace();
         }
     }
-    
-    private void printList(){
-        for(String temp:list){
-            System.out.printf("\n%s",temp);
+
+    private void prepCode() {
+        
+    }
+
+    private void printList() {
+        for (String temp : list) {
+            System.out.printf("\n%s", temp);
         }
     }
 
@@ -145,11 +119,12 @@ public class ScanCode {
                 //This section of this method splits the line by spaces into an array 
                 checker = line.split(" ");
                 for (String element : checker) {
+                    System.out.println(element);
                     element = element.trim();
                     //This section of the method checks if the array element in question is empty; if it is not, the element continues to the seperator 
                     if (element.equals("")) {
-                        //list.add(" ");
-                    }else{
+                        list.add(" ");
+                    } else {
                         holder = element;
                         //This section of the method is the seperator; it's job is to seperate element by use of the reserve words list, and store said element/elements into the 'list' ArrayList 
                         for (int i = 0; i < element.length(); i++) {
