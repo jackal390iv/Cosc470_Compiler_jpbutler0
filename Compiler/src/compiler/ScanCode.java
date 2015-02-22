@@ -76,7 +76,30 @@ public class ScanCode {
     }
 
     private void prepCode() {
-        
+        String element;
+        String[] holder;
+        for (int i = 0; i < list.size(); i++) {
+            while ((list.get(i).contains(" ")) && (!(list.get(i).isEmpty()))) {
+                element = list.get(i);
+                list.remove(i);
+                list.add(i, element.substring(element.indexOf(" ") + 1));
+                list.add(i, "");
+                list.add(i, element.substring(0, element.indexOf(" ")));
+            }
+        }
+        for (int i = 0; i < list.size(); i++) {
+            for (int k = 0; k < TheCollector.getReserveWordsMinusCombinables().size(); k++) {
+                if ((list.get(i).contains(TheCollector.getReserveWordsMinusCombinables().get(k))) && (!(list.get(i).equals(TheCollector.getReserveWordsMinusCombinables().get(k))))) {
+                    holder = new String[]{list.get(i).substring(0, list.get(i).indexOf(TheCollector.getReserveWordsMinusCombinables().get(k))), TheCollector.getReserveWordsMinusCombinables().get(k), list.get(i).substring(list.get(i).indexOf(TheCollector.getReserveWordsMinusCombinables().get(k)) + TheCollector.getReserveWordsMinusCombinables().get(k).length(), list.get(i).length())};
+                    list.remove(i);
+                    for (int j = 2; j >= 0; j--) {
+                        if (!(holder[j].isEmpty())) {
+                            list.add(i, holder[j]);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void printList() {
