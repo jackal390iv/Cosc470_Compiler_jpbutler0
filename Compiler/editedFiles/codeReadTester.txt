@@ -1,6 +1,7 @@
 DECLARE
     my_vchar    VARCHAR2(6);    
-    my_bool     BOOLEAN ;
+    'my_bool'     BOOLEAN ;
+    't'
     total       SMALLINT     (  3    )  ;
 BEGIN
 IF BEGIN

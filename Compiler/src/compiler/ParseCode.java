@@ -11,19 +11,10 @@ package compiler;
 public class ParseCode {
 
     public ParseCode() {
-        //TheCollection.printNodes();        
-        //TheCollector.printReserveWords();
-        //TheCollector.printUnknownList();
-        //TheCollector.printReserveWordsMinusCombinables();
-        //TheCollector.printSpacedCombinables();
-        //TheCollector.printRegularCombinables();
-        //TheCollector.printCodeList();
+        TheCollector.printTokens();
     }
 
     public void defineTypes() {
-        //for(String element:ScanCode.getCodeList()){
 
-        //}
     }
-
 }

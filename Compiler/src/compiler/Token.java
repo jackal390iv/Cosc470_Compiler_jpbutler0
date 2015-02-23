@@ -26,6 +26,6 @@ public class Token {
     }
     
     public void printIdAndValue(){
-        System.out.printf("\nGrammar Id: %-40sValue: %s", grammarId,value);
+        System.out.printf("\nValue: %-40sGrammar Id: %s", value,grammarId);
     }
 }

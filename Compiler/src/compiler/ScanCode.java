@@ -26,7 +26,7 @@ public class ScanCode {
         this.codeTextLocation = codeTextLocation;
         readCode();
         prepCode();
-        createTokens();
+        prepToken();
     }
 
     /**
@@ -77,10 +77,9 @@ public class ScanCode {
 
     private void prepCode() {
         try {
-            String element, temp, mix;
+            String element;
             int counter, clicker;
             String[] holder;
-            boolean possible;
 
             for (int i = 0; i < list.size(); i++) {
                 while ((list.get(i).contains(" ")) && (!(list.get(i).isEmpty()))) {
@@ -137,20 +136,17 @@ public class ScanCode {
                 for (int k = 0; k < TheCollector.getSpacedCombinables().size(); k++) {
                     counter = 0;
                     clicker = 0;
-                    element = "";
-                    holder = TheCollector.getSpacedCombinables().get(k).split(" ");
-                    counter = holder.length + holder.length - 1;
-                    if (!(i + counter >= list.size())) {
-                        while (clicker <= counter) {
-                            if (list.get(i + clicker).isEmpty()) {
-                                element = element + " ";
-                            } else {
-                                element = element + list.get(i + clicker);
-                            }
-                            clicker++;
+                    element = list.get(i);
+                    while ((TheCollector.getSpacedCombinables().get(k).contains(element)) && ((i + counter) < list.size()) && (!(TheCollector.getSpacedCombinables().get(k).equals(element)))) {
+                        counter++;
+                        if (list.get(i + counter).isEmpty()) {
+                            element = element + " ";
+                        } else {
+                            element = element + list.get(i + counter);
                         }
                     }
                     if (element.equals(TheCollector.getSpacedCombinables().get(k))) {
+
                         clicker = 0;
                         while (clicker != counter + 1) {
                             list.remove(i);
@@ -159,8 +155,8 @@ public class ScanCode {
                         list.add(i, element);
                     }
                 }
-            }     
-            
+            }
+
         } catch (Exception ex) {
             System.out.println("\n" + "ERROR");
             System.out.println("Type: " + ex.getClass().getName());
@@ -169,15 +165,31 @@ public class ScanCode {
             System.out.println("Message: " + ex.getMessage());
             System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
             //ex.printStackTrace();
-        }  
+        }
     }
-    
-    private void createTokens(){
-        
-        
-        
-        
-        
+
+    private void prepToken() {
+        boolean checker;
+        String temp;
+        for (int i = 0; i < list.size(); i++) {
+            if (!(list.get(i).isEmpty())) {
+                checker = false;
+                for (int k = 0; k < TheCollector.getReserveWords().size(); k++) {
+                    if (list.get(i).equals(TheCollector.getReserveWords().get(k))) {
+                        TheCollector.addToken(new Token(list.get(i), list.get(i)));
+                        checker = true;
+                        break;
+                    }
+                }
+                if (checker == false) {
+                    temp=Changer.defineUnknown(list.get(i));
+                    if(temp.equals("ERROR")){
+                        System.out.printf("\nERROR\nThe following code is not acceptable: %s\n",list.get(i));
+                        System.exit(0);
+                    }else{
+                    TheCollector.addToken(new Token(temp, list.get(i)));}
+                }
+            }
+        }
     }
-    
 }

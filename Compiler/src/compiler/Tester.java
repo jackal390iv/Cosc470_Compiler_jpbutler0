@@ -12,8 +12,9 @@ public class Tester {
 
     public static void main(String[] args) {
         TheCollector grammarCollection = new TheCollector();
+        Changer changer= new Changer();
         ScanGrammar scanGrammar = new ScanGrammar("./editedFiles/grammar.txt"); 
-        ScanCode scanCode = new ScanCode("./editedFiles/codeReadTester.txt");
-        //ParseCode parseCode = new ParseCode();
+        ScanCode scanCode = new ScanCode("./editedFiles/codeV1.txt");        
+        ParseCode parseCode = new ParseCode();
     }
 }

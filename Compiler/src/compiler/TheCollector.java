@@ -15,12 +15,14 @@ import java.util.HashMap;
 public class TheCollector {
 
     private static HashMap<String, GrammarNode> grammarNodes;
+    private static ArrayList<Token> tokens;
     private static ArrayList<String> reserveWords, reserveWordsMinusCombinables, spacedCombinables, regularCombinables, codeList, unknownList;
     private static String commentSymbol, commentBlockStartSymbol,commentBlockEndSymbol;
     private static boolean endLineExists;
 
     public TheCollector() {
         grammarNodes = new HashMap<String, GrammarNode>();
+        tokens = new ArrayList<Token>();
         reserveWords = new ArrayList<String>();
         reserveWordsMinusCombinables = new ArrayList<String>();
         spacedCombinables = new ArrayList<String>();
@@ -43,6 +45,16 @@ public class TheCollector {
             System.out.printf("\n\n\nHashMap Key: %-50sGrammar Id: %-50sChild Batch Count: %-50dParent Count: %-50d\n", key, grammarNodes.get(key).getGrammarId(), grammarNodes.get(key).getChildBatchCount(), grammarNodes.get(key).getParentCount());
             grammarNodes.get(key).printParents();
             grammarNodes.get(key).printChildBatches();
+        }
+    }
+    
+    public static void addToken(Token token){
+        tokens.add(token);
+    }
+    
+    public static void printTokens(){
+        for(Token temp:tokens){
+            temp.printIdAndValue();
         }
     }
 
