@@ -197,12 +197,14 @@ public class ScanCode {
                 if (checker == false) {
                     temp=Changer.defineUnknown(code.get(i));
                     if(temp.equals("ERROR")){
-                        System.out.printf("\nERROR\nThe following code is not acceptable: %s\n",code.get(i));
+                        System.out.printf("\nERROR\nThe Following Code Is Not Acceptable: %s\n",code.get(i));
                         System.exit(0);
                     }else{
                     TheCollector.addToken(new Token(temp, code.get(i)));}
                 }
             
         }
+        
+        Changer.checkIdentifiers();
     }
 }
