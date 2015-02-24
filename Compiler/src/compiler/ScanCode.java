@@ -19,10 +19,11 @@ public class ScanCode {
 
     private Scanner scanner;
     private String codeTextLocation;
-    private static ArrayList<String> list;
+    private static ArrayList<String> list,code;
 
     public ScanCode(String codeTextLocation) {
         list = new ArrayList<String>();
+        code = new ArrayList<String>();
         this.codeTextLocation = codeTextLocation;
         readCode();
         prepCode();
@@ -156,6 +157,14 @@ public class ScanCode {
                     }
                 }
             }
+            
+            for(String temp:list){
+                if(!(temp.isEmpty())){
+                    code.add(temp);
+                }
+            }
+            
+            list.clear();
 
         } catch (Exception ex) {
             System.out.println("\n" + "ERROR");
@@ -171,25 +180,29 @@ public class ScanCode {
     private void prepToken() {
         boolean checker;
         String temp;
-        for (int i = 0; i < list.size(); i++) {
-            if (!(list.get(i).isEmpty())) {
+        
+        Changer.checkBasicSyntax(code.get(0), "START");
+        Changer.checkBasicSyntax(code.get(code.size()-2), "END_Minus_1");
+        Changer.checkBasicSyntax(code.get(code.size()-1), "END");
+        
+        for (int i = 0; i < code.size(); i++) {
                 checker = false;
                 for (int k = 0; k < TheCollector.getReserveWords().size(); k++) {
-                    if (list.get(i).equals(TheCollector.getReserveWords().get(k))) {
-                        TheCollector.addToken(new Token(list.get(i), list.get(i)));
+                    if (code.get(i).equals(TheCollector.getReserveWords().get(k))) {
+                        TheCollector.addToken(new Token(code.get(i), code.get(i)));
                         checker = true;
                         break;
                     }
                 }
                 if (checker == false) {
-                    temp=Changer.defineUnknown(list.get(i));
+                    temp=Changer.defineUnknown(code.get(i));
                     if(temp.equals("ERROR")){
-                        System.out.printf("\nERROR\nThe following code is not acceptable: %s\n",list.get(i));
+                        System.out.printf("\nERROR\nThe following code is not acceptable: %s\n",code.get(i));
                         System.exit(0);
                     }else{
-                    TheCollector.addToken(new Token(temp, list.get(i)));}
+                    TheCollector.addToken(new Token(temp, code.get(i)));}
                 }
-            }
+            
         }
     }
 }

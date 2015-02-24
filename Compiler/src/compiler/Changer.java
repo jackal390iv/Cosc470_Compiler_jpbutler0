@@ -31,4 +31,24 @@ public class Changer {
         }
         return grammarId;
     }
+
+    public static void checkBasicSyntax(String code, String location) {
+        String temp = "\\";
+        if (location.equals("START")) {
+            if (!((code.equals("DECLARE")) || (code.equals("BEGIN")))) {
+                System.out.printf("\nERROR\nThe Following Syntax Errors Have Occured: Program Must Start With Either 'DECLARE' or 'BEGIN'");
+                System.exit(0);
+            }
+        } else if (location.equals("END_Minus_1")) {
+            if (!(code.equals("END;"))) {
+                System.out.printf("\nERROR\nThe Following Syntax Errors Have Occured: Program Must End With 'END;' followed by '%s'", temp.charAt(0));
+                System.exit(0);
+            }
+        } else if (location.equals("END")) {
+            if (!(code.equals("\\"))) {
+                System.out.printf("\nERROR\nThe Following Syntax Errors Have Occured: Program Must End With 'END;' followed by '%s'", temp.charAt(0));
+                System.exit(0);
+            }
+        }
+    }
 }

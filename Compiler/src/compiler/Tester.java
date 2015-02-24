@@ -15,6 +15,6 @@ public class Tester {
         Changer changer= new Changer();
         ScanGrammar scanGrammar = new ScanGrammar("./editedFiles/grammar.txt"); 
         ScanCode scanCode = new ScanCode("./editedFiles/codeV1.txt");        
-        ParseCode parseCode = new ParseCode();
+        ParseCode parseCode = new ParseCode(TheCollector.getTokens());
     }
 }

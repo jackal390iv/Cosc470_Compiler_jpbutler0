@@ -4,17 +4,28 @@
  */
 package compiler;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Jonathan Butler <https://github.com/jackal390iv>
  */
 public class ParseCode {
-
-    public ParseCode() {
-        TheCollector.printTokens();
+    
+    private ArrayList<Token> tokens;
+    
+    public ParseCode(ArrayList<Token> tokens) {
+        this.tokens = tokens;
+        //TheCollector.printTokens();        
+        traverseGrammar();
     }
-
-    public void defineTypes() {
-
+       
+    private void traverseGrammar() {        
+        int counter=0;
+        GrammarNode grammarNode;
+        
+        grammarNode = TheCollector.getNode(tokens.get(0+counter).getGrammarId());
+        
+        
     }
 }

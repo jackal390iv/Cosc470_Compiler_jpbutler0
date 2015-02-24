@@ -52,10 +52,15 @@ public class TheCollector {
         tokens.add(token);
     }
     
+    public static ArrayList<Token> getTokens(){
+        return tokens;
+    }
+    
     public static void printTokens(){
         for(Token temp:tokens){
             temp.printIdAndValue();
         }
+        System.out.println("\n");
     }
 
     public static void printSelfPointerNodes() {
