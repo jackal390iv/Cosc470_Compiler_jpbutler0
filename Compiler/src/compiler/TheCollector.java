@@ -16,79 +16,19 @@ public class TheCollector {
 
     private static HashMap<String, GrammarNode> grammarNodes;
     private static ArrayList<Token> tokens;
-    private static ArrayList<String> reserveWords, reserveWordsMinusCombinables, spacedCombinables, regularCombinables, codeList, unknownList;
-    private static String commentSymbol, commentBlockStartSymbol,commentBlockEndSymbol;
+    private static ArrayList<String> reserveWords, unknownList, reserveWordsMinusCombinables, combinables, codeList;
+    private static String commentSymbol, commentBlockStartSymbol, commentBlockEndSymbol;
     private static boolean endLineExists;
 
     public TheCollector() {
-        grammarNodes = new HashMap<String, GrammarNode>();
-        tokens = new ArrayList<Token>();
-        reserveWords = new ArrayList<String>();
-        reserveWordsMinusCombinables = new ArrayList<String>();
-        spacedCombinables = new ArrayList<String>();
-        regularCombinables = new ArrayList<String>();
-        codeList = new ArrayList<String>();
-        unknownList = new ArrayList<String>();
+        grammarNodes = new HashMap<>();
+        reserveWords = new ArrayList<>();
+        unknownList = new ArrayList<>();
+        reserveWordsMinusCombinables = new ArrayList<>();
+        combinables = new ArrayList<>();
+        codeList = new ArrayList<>();
+        tokens = new ArrayList<>();
         endLineExists = false;
-    }
-
-    public static void addNode(String grammarId, GrammarNode node) {
-        grammarNodes.put(grammarId, node);
-    }
-
-    public static GrammarNode getNode(String grammarId) {
-        return grammarNodes.get(grammarId); //returns null if it doesn't exist
-    }
-
-    public static void printNodes() {
-        for (String key : grammarNodes.keySet()) {
-            System.out.printf("\n\n\nHashMap Key: %-50sGrammar Id: %-50sChild Batch Count: %-50dParent Count: %-50d\n", key, grammarNodes.get(key).getGrammarId(), grammarNodes.get(key).getChildBatchCount(), grammarNodes.get(key).getParentCount());
-            grammarNodes.get(key).printParents();
-            grammarNodes.get(key).printChildBatches();
-        }
-    }
-    
-    public static void addToken(Token token){
-        tokens.add(token);
-    }
-    
-    public static ArrayList<Token> getTokens(){
-        return tokens;
-    }
-    
-    public static void printTokens(){
-        for(Token temp:tokens){
-            temp.printIdAndValue();
-        }
-        System.out.println("\n");
-    }
-
-    public static void printSelfPointerNodes() {
-        for (String key : grammarNodes.keySet()) {
-            if (grammarNodes.get(key).doesPointsToSelf()) {
-                System.out.printf("\n\n\nHashMap Key: %-50sGrammar Id: %-50sChild Batch Count: %-50dParent Count: %-50d\n", key, grammarNodes.get(key).getGrammarId(), grammarNodes.get(key).getChildBatchCount(), grammarNodes.get(key).getParentCount());
-                grammarNodes.get(key).printParents();
-                grammarNodes.get(key).printChildBatches();
-            }
-        }
-    }
-
-    /**
-     * This method adds a reserve word to the reserve word list
-     *
-     * @param reserveWord
-     */
-    public static void addReserveWord(String reserveWord, boolean endLineSymbol) {
-        if (endLineSymbol) {
-            reserveWords.add(reserveWord);
-            endLineExists = true;
-        } else {
-            if (endLineExists) {
-                reserveWords.add(reserveWords.size() - 1, reserveWord);
-            } else {
-                reserveWords.add(reserveWord);
-            }
-        }
     }
 
     /**
@@ -101,6 +41,64 @@ public class TheCollector {
         return reserveWords;
     }
 
+    public static ArrayList<String> getUnknownList() {
+        return unknownList;
+    }
+
+    public static ArrayList<String> getReserveWordsMinusCombinables() {
+        return reserveWordsMinusCombinables;
+    }
+
+    public static ArrayList<String> getCombinables() {
+        return combinables;
+    }
+
+    public static ArrayList<String> getCodeList() {
+        return codeList;
+    }
+
+    public static ArrayList<Token> getTokens() {
+        return tokens;
+    }
+
+    public static GrammarNode getGrammarNode(String grammarId) {
+        return grammarNodes.get(grammarId); //returns null if it doesn't exist
+    }
+
+    public static String getCommentSymbol() {
+        return commentSymbol;
+    }
+
+    public static String getCommentBlockStartSymbol() {
+        return commentBlockStartSymbol;
+    }
+
+    public static String getCommentBlockEndSymbol() {
+        return commentBlockEndSymbol;
+    }
+
+    public static void printGrammarNodes() {
+        System.out.printf("\n\nGrammar Nodes:");
+        for (String key : grammarNodes.keySet()) {
+            System.out.printf("\n\n\nHashMap Key: %-50sGrammar Id: %-50sChild Batch Count: %-50dParent Count: %-50d\n", key, grammarNodes.get(key).getGrammarId(), grammarNodes.get(key).getChildBatchCount(), grammarNodes.get(key).getParentCount());
+            grammarNodes.get(key).printParents();
+            grammarNodes.get(key).printChildBatches();
+        }
+        System.out.printf("\n");
+    }
+
+    public static void printGrammarSelfPointerNodes() {
+        System.out.printf("\n\nGrammar Nodes That Point To Themselves:");
+        for (String key : grammarNodes.keySet()) {
+            if (grammarNodes.get(key).doesPointsToSelf()) {
+                System.out.printf("\n\n\nHashMap Key: %-50sGrammar Id: %-50sChild Batch Count: %-50dParent Count: %-50d\n", key, grammarNodes.get(key).getGrammarId(), grammarNodes.get(key).getChildBatchCount(), grammarNodes.get(key).getParentCount());
+                grammarNodes.get(key).printParents();
+                grammarNodes.get(key).printChildBatches();
+            }
+        }
+        System.out.printf("\n");
+    }
+
     /**
      * This method prints all grammar reserve words that are held in the
      * 'reserve' ArrayList.
@@ -111,52 +109,7 @@ public class TheCollector {
         for (String temp : reserveWords) {
             System.out.printf("\n%s", temp);
         }
-    }
-    
-    public static void setCommentSymbol(String symbol){
-        commentSymbol=symbol;
-    }
-    
-    public static String getCommentSymbol(){
-        return commentSymbol;
-    }
-    
-    public static void setCommentBlockStartSymbol(String symbol){
-        commentBlockStartSymbol=symbol;
-    }
-    
-    public static String getCommentBlockStartSymbol(){
-        return commentBlockStartSymbol;
-    }
-    
-    public static void setCommentBlockEndSymbol(String symbol){
-        commentBlockEndSymbol=symbol;
-    }
-    
-    public static String getCommentBlockEndSymbol(){
-        return commentBlockEndSymbol;
-    }
-
-    public static void addCode(String code) {
-        codeList.add(code);
-    }
-
-    public static ArrayList<String> getCodeList() {
-        return codeList;
-    }
-
-    public static void printCodeList() {
-        for (String temp : codeList) {
-            System.out.println(temp);
-        }
-    }
-
-    public static void addUnknow(String unknown) {
-        unknownList.add(unknown);
-    }
-
-    public static ArrayList<String> getUnknownList() {
-        return unknownList;
+        System.out.printf("\n");
     }
 
     public static void printUnknownList() {
@@ -164,94 +117,154 @@ public class TheCollector {
         for (String temp : unknownList) {
             System.out.printf("\n%s", temp);
         }
+        System.out.printf("\n");
     }
 
-    public static void addRegualarCombinable(String combinable) {
-        if (regularCombinables.size() == 0) {
-            regularCombinables.add(combinable);
-        } else {
-            for (int i = 0; i < regularCombinables.size(); i++) {
-                if (regularCombinables.get(i).length() < combinable.length()) {
-                    regularCombinables.add(i, combinable);
-                    break;
-                } else if (i == regularCombinables.size() - 1) {
-                    regularCombinables.add(combinable);
-                    break;
-                }
-            }
-        }
-    }
-
-    public static ArrayList<String> getRegualarCombinables() {
-        return regularCombinables;
-    }
-
-    public static void printRegularCombinables() {
-        System.out.printf("\n\nRegular Combinables List:");
-        for (String temp : regularCombinables) {
-            System.out.printf("\n%s", temp);
-        }
-    }
-
-    public static void addSpacedCombinable(String spacedCombinable) {
-        if (spacedCombinables.size() == 0) {
-            spacedCombinables.add(spacedCombinable);
-        } else {
-            for (int i = 0; i < spacedCombinables.size(); i++) {
-                if (spacedCombinables.get(i).length() < spacedCombinable.length()) {
-                    spacedCombinables.add(i, spacedCombinable);
-                    break;
-                } else if (i == spacedCombinables.size() - 1) {
-                    spacedCombinables.add(spacedCombinable);
-                    break;
-                }
-            }
-        }
-    }
-
-    public static ArrayList<String> getSpacedCombinables() {
-        return spacedCombinables;
-    }
-
-    public static void printSpacedCombinables() {
-        System.out.printf("\n\nSpaced Cobinables List:");
-        for (String temp : spacedCombinables) {
-            System.out.printf("\n%s", temp);
-        }
-    }
-
-    public static void createReserveWordsMinusCombinables() {
-        boolean exists;
-        for (String temp : reserveWords) {
-            exists = false;
-            for (String Rcombinables : regularCombinables) {
-                if (temp.equals(Rcombinables)) {
-                    exists = true;
-                    break;
-                }
-            }
-            for (String Scombinables : spacedCombinables) {
-                if (temp.equals(Scombinables)) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (exists != true) {
-                reserveWordsMinusCombinables.add(temp);
-            }
-        }
-    }
-    
-    public static ArrayList<String> getReserveWordsMinusCombinables() {
-        return reserveWordsMinusCombinables;
-    }
-    
     public static void printReserveWordsMinusCombinables() {
         System.out.printf("\n\nReserve Words Minus Cobinables List:");
         for (String temp : reserveWordsMinusCombinables) {
             System.out.printf("\n%s", temp);
         }
+        System.out.printf("\n");
     }
 
+    public static void printCombinables() {
+        System.out.printf("\n\nCombinables List:");
+        for (String temp : combinables) {
+            System.out.printf("\n%s", temp);
+        }
+        System.out.printf("\n");
+    }
 
+    public static void printCodeList() {
+        System.out.printf("\n\nCode List:");
+        for (String temp : codeList) {
+            System.out.println(temp);
+        }
+        System.out.printf("\n");
+    }
+
+    public static void printTokens() {
+        System.out.printf("\n\nTokens:");
+        for (Token temp : tokens) {
+            temp.printIdAndValue();
+        }
+        System.out.println("\n");
+    }
+
+    public static void setCommentSymbol(String symbol) {
+        try {
+            commentSymbol = symbol;
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    public static void setCommentBlockStartSymbol(String symbol) {
+        try {
+            commentBlockStartSymbol = symbol;
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    public static void setCommentBlockEndSymbol(String symbol) {
+        try {
+            commentBlockEndSymbol = symbol;
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    public static void addGrammarNode(String grammarId, GrammarNode node) {
+        try {
+            grammarNodes.put(grammarId, node);
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    /**
+     * This method adds a reserve word to the reserve word list
+     *
+     * @param reserveWord
+     */
+    public static void addReserveWord(String reserveWord, boolean endLineSymbol) {
+        try {
+            if (endLineSymbol) {
+                reserveWords.add(reserveWord);
+                endLineExists = true;
+            } else {
+                if (endLineExists) {
+                    reserveWords.add(reserveWords.size() - 1, reserveWord);
+                } else {
+                    reserveWords.add(reserveWord);
+                }
+            }
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    public static void addUnknown(String unknown) {
+        try {
+            unknownList.add(unknown);
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    public static void addReserveWordMinusCombinables(String reserveWordMinusCombinables) {
+        try {
+            reserveWordsMinusCombinables.add(reserveWordMinusCombinables);
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    public static void addCombinable(String combinable) {
+        try {
+            if (combinables.isEmpty()) {
+                combinables.add(combinable);
+            } else {
+                for (int i = 0; i < combinables.size(); i++) {
+                    if (combinables.get(i).length() < combinable.length()) {
+                        combinables.add(i, combinable);
+                        break;
+                    } else if (i == combinables.size() - 1) {
+                        combinables.add(combinable);
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    public static void addCode(String code) {
+        try {
+            codeList.add(code);
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    public static void addToken(Token token) {
+        try {
+            tokens.add(token);
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
 }

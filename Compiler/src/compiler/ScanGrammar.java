@@ -39,6 +39,7 @@ public class ScanGrammar {
         readGrammar();
         seperateGrammar();
         buildCombinableWordList();
+        buildReserveWordsMinusCombinables();
     }
 
     /**
@@ -50,24 +51,24 @@ public class ScanGrammar {
      *
      */
     private void readGrammar() {
+        String line, temp;
         try {
             scanner = new Scanner(new File(grammarTextLocation));
-            String line, temp;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
                 if (line.startsWith("{")) {
                     temp = line.substring(1, line.indexOf("}")).trim();
                     if (temp.equals("COMMENT_SYMBOL")) {
-                        temp=line.substring(line.indexOf("|")+2);
-                        temp=temp.substring(0,temp.indexOf("}")).trim();
+                        temp = line.substring(line.indexOf("|") + 2);
+                        temp = temp.substring(0, temp.indexOf("}")).trim();
                         TheCollector.setCommentSymbol(temp);
                     } else if (temp.equals("COMMENT_BLOCK_START_SYMBOL")) {
-                        temp=line.substring(line.indexOf("|")+2);
-                        temp=temp.substring(0,temp.indexOf("}")).trim();
+                        temp = line.substring(line.indexOf("|") + 2);
+                        temp = temp.substring(0, temp.indexOf("}")).trim();
                         TheCollector.setCommentBlockStartSymbol(temp);
                     } else if (temp.equals("COMMENT_BLOCK_END_SYMBOL")) {
-                        temp=line.substring(line.indexOf("|")+2);
-                        temp=temp.substring(0,temp.indexOf("}")).trim();
+                        temp = line.substring(line.indexOf("|") + 2);
+                        temp = temp.substring(0, temp.indexOf("}")).trim();
                         TheCollector.setCommentBlockEndSymbol(temp);
                     } else {
                         new GrammarNode(temp);
@@ -77,12 +78,7 @@ public class ScanGrammar {
             }
             scanner.close();
         } catch (Exception ex) {
-            System.out.println("\n" + "ERROR");
-            System.out.println("Type: " + ex.getClass().getName());
-            System.out.println("Location: " + this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName());
-            System.out.println("Cause: " + ex.getCause());
-            System.out.println("Message: " + ex.getMessage());
-            System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
         }
     }
@@ -98,7 +94,7 @@ public class ScanGrammar {
         String temp, element;
         try {
             for (String line : grammarLines) {
-                placeHolder = TheCollector.getNode(line.substring(1, line.indexOf("}")).trim());
+                placeHolder = TheCollector.getGrammarNode(line.substring(1, line.indexOf("}")).trim());
                 if (line.contains("|")) {
                     line = line.substring(line.indexOf("|"));
                     while (line.contains("|")) {
@@ -122,29 +118,51 @@ public class ScanGrammar {
             }
             grammarLines.clear();
         } catch (Exception ex) {
-            System.out.println("\n" + "ERROR");
-            System.out.println("Type: " + ex.getClass().getName());
-            System.out.println("Location: " + this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName());
-            System.out.println("Cause: " + ex.getCause());
-            System.out.println("Message: " + ex.getMessage());
-            System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
         }
     }
 
     private void buildCombinableWordList() {
-        for (String tester : TheCollector.getReserveWords()) {
-            for (String checker : TheCollector.getReserveWords()) {
-                if (((tester.contains(checker)) && (!(tester.equals(checker)))) || (tester.contains(" "))) {
-                    if (tester.contains(" ")) {
-                        TheCollector.addSpacedCombinable(tester);
-                    } else {
-                        TheCollector.addRegualarCombinable(tester);
+        try {
+            for (String tester : TheCollector.getReserveWords()) {
+                for (String checker : TheCollector.getReserveWords()) {
+                    if (((tester.contains(checker)) && (!(tester.equals(checker)))) || (tester.contains(" "))) {
+                        TheCollector.addCombinable(tester);
+                        break;
                     }
-                    break;
                 }
             }
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
         }
-        TheCollector.createReserveWordsMinusCombinables();
+    }
+
+    public void buildReserveWordsMinusCombinables() {
+        boolean exists;
+        try {
+            for (String temp : TheCollector.getReserveWords()) {
+                exists = false;
+                for (String Rcombinables : TheCollector.getCombinables()) {
+                    if (temp.equals(Rcombinables)) {
+                        exists = true;
+                        break;
+                    }
+                }
+                for (String Scombinables : TheCollector.getCombinables()) {
+                    if (temp.equals(Scombinables)) {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (exists != true) {
+                    TheCollector.addReserveWordMinusCombinables(temp);
+                }
+            }
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
     }
 }

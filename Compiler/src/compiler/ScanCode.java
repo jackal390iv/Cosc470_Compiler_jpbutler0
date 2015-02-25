@@ -18,16 +18,19 @@ import java.util.Scanner;
 public class ScanCode {
 
     private Scanner scanner;
-    private String codeTextLocation;
-    private static ArrayList<String> list,code;
+    private final String codeTextLocation;
+    private static ArrayList<String> list, code;
 
     public ScanCode(String codeTextLocation) {
-        list = new ArrayList<String>();
-        code = new ArrayList<String>();
+        list = new ArrayList<>();
+        code = new ArrayList<>();
         this.codeTextLocation = codeTextLocation;
         readCode();
-        prepCode();
-        prepToken();
+        seperateSpaces();
+        checkForBasicReserveWords();
+        checkForCombinables();
+        removeEmptyElements();
+        createTokens();
     }
 
     /**
@@ -38,10 +41,10 @@ public class ScanCode {
      *
      */
     private void readCode() {
+        String line;
+        boolean multiLineComment = false;
         try {
             scanner = new Scanner(new File(codeTextLocation));
-            String line;
-            boolean multiLineComment = false;
             while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
                 //This section of this method checks for pre-existing multi-Line comments and removes them; designated in our current grammar as '/*' to '*/'
@@ -66,22 +69,14 @@ public class ScanCode {
             }
             scanner.close();
         } catch (Exception ex) {
-            System.out.println("\n" + "ERROR");
-            System.out.println("Type: " + ex.getClass().getName());
-            System.out.println("Location: " + this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName());
-            System.out.println("Cause: " + ex.getCause());
-            System.out.println("Message: " + ex.getMessage());
-            System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
         }
     }
 
-    private void prepCode() {
+    private void seperateSpaces() {
+        String element;
         try {
-            String element;
-            int counter, clicker;
-            String[] holder;
-
             for (int i = 0; i < list.size(); i++) {
                 while ((list.get(i).contains(" ")) && (!(list.get(i).isEmpty()))) {
                     element = list.get(i);
@@ -91,7 +86,15 @@ public class ScanCode {
                     list.add(i, element.substring(0, element.indexOf(" ")));
                 }
             }
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
 
+    private void checkForBasicReserveWords() {
+        String[] holder;
+        try {
             for (int i = 0; i < list.size(); i++) {
                 for (int k = 0; k < TheCollector.getReserveWordsMinusCombinables().size(); k++) {
                     if ((list.get(i).contains(TheCollector.getReserveWordsMinusCombinables().get(k))) && (!(list.get(i).equals(TheCollector.getReserveWordsMinusCombinables().get(k))))) {
@@ -105,40 +108,22 @@ public class ScanCode {
                     }
                 }
             }
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
 
+    private void checkForCombinables() {
+        String element;
+        int counter, clicker;
+        try {
             for (int i = 0; i < list.size(); i++) {
-                if (!(list.get(i).isEmpty())) {
-                    for (int k = 0; k < TheCollector.getRegualarCombinables().size(); k++) {
-                        counter = 0;
-                        element = list.get(i);
-                        while ((TheCollector.getRegualarCombinables().get(k).contains(element)) && (!(TheCollector.getRegualarCombinables().get(k).equals(element)))) {
-                            holder = new String[]{TheCollector.getRegualarCombinables().get(k).substring(0, TheCollector.getRegualarCombinables().get(k).indexOf(element)), element, TheCollector.getRegualarCombinables().get(k).substring(TheCollector.getRegualarCombinables().get(k).indexOf(element) + element.length(), TheCollector.getRegualarCombinables().get(k).length())};
-                            counter++;
-                            if ((i + counter == list.size()) || (list.get(i + counter).isEmpty())) {
-                                element = "";
-                                break;
-                            } else if ((!(holder[2].isEmpty())) && (holder[2].contains(list.get(i + counter)))) {
-                                element = element + list.get(i + counter);
-                            }
-                        }
-                        if (TheCollector.getRegualarCombinables().get(k).equals(element)) {
-                            clicker = 0;
-                            while (clicker != counter + 1) {
-                                list.remove(i);
-                                clicker++;
-                            }
-                            list.add(i, element);
-                        }
-                    }
-                }
-            }
-
-            for (int i = 0; i < list.size(); i++) {
-                for (int k = 0; k < TheCollector.getSpacedCombinables().size(); k++) {
+                for (int k = 0; k < TheCollector.getCombinables().size(); k++) {
                     counter = 0;
                     clicker = 0;
                     element = list.get(i);
-                    while ((TheCollector.getSpacedCombinables().get(k).contains(element)) && ((i + counter) < list.size()) && (!(TheCollector.getSpacedCombinables().get(k).equals(element)))) {
+                    while ((TheCollector.getCombinables().get(k).contains(element)) && ((i + counter) < list.size()) && (!(TheCollector.getCombinables().get(k).equals(element)))) {
                         counter++;
                         if (list.get(i + counter).isEmpty()) {
                             element = element + " ";
@@ -146,8 +131,7 @@ public class ScanCode {
                             element = element + list.get(i + counter);
                         }
                     }
-                    if (element.equals(TheCollector.getSpacedCombinables().get(k))) {
-
+                    if (element.equals(TheCollector.getCombinables().get(k))) {
                         clicker = 0;
                         while (clicker != counter + 1) {
                             list.remove(i);
@@ -157,35 +141,34 @@ public class ScanCode {
                     }
                 }
             }
-            
-            for(String temp:list){
-                if(!(temp.isEmpty())){
-                    code.add(temp);
-                }
-            }
-            
-            list.clear();
-
         } catch (Exception ex) {
-            System.out.println("\n" + "ERROR");
-            System.out.println("Type: " + ex.getClass().getName());
-            System.out.println("Location: " + this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName());
-            System.out.println("Cause: " + ex.getCause());
-            System.out.println("Message: " + ex.getMessage());
-            System.out.println("Local Message: " + ex.getLocalizedMessage() + "\n");
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
         }
     }
 
-    private void prepToken() {
+    private void removeEmptyElements() {
+        try {
+            for (String temp : list) {
+                if (!(temp.isEmpty())) {
+                    code.add(temp);
+                }
+            }
+            list.clear();
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
+        }
+    }
+
+    private void createTokens() {
         boolean checker;
         String temp;
-        
-        Changer.checkBasicSyntax(code.get(0), "START");
-        Changer.checkBasicSyntax(code.get(code.size()-2), "END_Minus_1");
-        Changer.checkBasicSyntax(code.get(code.size()-1), "END");
-        
-        for (int i = 0; i < code.size(); i++) {
+        try {
+            TheChecker.checkBasicSyntax(code.get(0), "START");
+            TheChecker.checkBasicSyntax(code.get(code.size() - 2), "END_Minus_1");
+            TheChecker.checkBasicSyntax(code.get(code.size() - 1), "END");
+            for (int i = 0; i < code.size(); i++) {
                 checker = false;
                 for (int k = 0; k < TheCollector.getReserveWords().size(); k++) {
                     if (code.get(i).equals(TheCollector.getReserveWords().get(k))) {
@@ -195,16 +178,19 @@ public class ScanCode {
                     }
                 }
                 if (checker == false) {
-                    temp=Changer.defineUnknown(code.get(i));
-                    if(temp.equals("ERROR")){
-                        System.out.printf("\nERROR\nThe Following Code Is Not Acceptable: %s\n",code.get(i));
+                    temp = TheChecker.defineUnknown(code.get(i));
+                    if (temp.equals("ERROR")) {
+                        System.out.printf("\nERROR\nThe Following Code Is Not Acceptable: %s\n", code.get(i));
                         System.exit(0);
-                    }else{
-                    TheCollector.addToken(new Token(temp, code.get(i)));}
+                    } else {
+                        TheCollector.addToken(new Token(temp, code.get(i)));
+                    }
                 }
-            
+            }
+            TheChecker.checkIdentifiers();
+        } catch (Exception ex) {
+            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+            //ex.printStackTrace();
         }
-        
-        Changer.checkIdentifiers();
     }
 }

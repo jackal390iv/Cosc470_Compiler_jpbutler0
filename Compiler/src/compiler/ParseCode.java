@@ -15,16 +15,15 @@ public class ParseCode {
     private ArrayList<Token> tokens;
     
     public ParseCode(ArrayList<Token> tokens) {
-        this.tokens = tokens;
-        //TheCollector.printTokens();        
-        traverseGrammar();
+        this.tokens = tokens;        
+        //traverseGrammar();
     }
        
     private void traverseGrammar() {        
         int counter=0;
         GrammarNode grammarNode;
         
-        grammarNode = TheCollector.getNode(tokens.get(0+counter).getGrammarId());
+        grammarNode = TheCollector.getGrammarNode(tokens.get(0+counter).getGrammarId());
         
         
     }
