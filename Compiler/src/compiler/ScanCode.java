@@ -33,6 +33,14 @@ public class ScanCode {
         createTokens();
     }
 
+    public static ArrayList<String> getList() {
+        return list;
+    }
+
+    public static ArrayList<String> getCode() {
+        return code;
+    }
+
     /**
      * This method reads the code text, who's location is designated in the
      * constructor, and adds its elements to the ArrayList 'list'. It should be
@@ -154,7 +162,6 @@ public class ScanCode {
                     code.add(temp);
                 }
             }
-            list.clear();
         } catch (Exception ex) {
             System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
@@ -163,11 +170,11 @@ public class ScanCode {
 
     private void createTokens() {
         boolean checker;
-        String temp;
         try {
             TheChecker.checkBasicSyntax(code.get(0), "START");
             TheChecker.checkBasicSyntax(code.get(code.size() - 2), "END_Minus_1");
             TheChecker.checkBasicSyntax(code.get(code.size() - 1), "END");
+            TheChecker.combineStringLiterals();
             for (int i = 0; i < code.size(); i++) {
                 checker = false;
                 for (int k = 0; k < TheCollector.getReserveWords().size(); k++) {
@@ -178,19 +185,15 @@ public class ScanCode {
                     }
                 }
                 if (checker == false) {
-                    temp = TheChecker.defineUnknown(code.get(i));
-                    if (temp.equals("ERROR")) {
-                        System.out.printf("\nERROR\nThe Following Code Is Not Acceptable: %s\n", code.get(i));
-                        System.exit(0);
-                    } else {
-                        TheCollector.addToken(new Token(temp, code.get(i)));
-                    }
+                    TheCollector.addToken(new Token(TheChecker.defineUnknown(code.get(i)), code.get(i)));
                 }
             }
             TheChecker.checkIdentifiers();
+            TheChecker.setSizeDefaults();
         } catch (Exception ex) {
             System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
         }
     }
+
 }

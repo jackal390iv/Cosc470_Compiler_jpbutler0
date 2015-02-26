@@ -15,7 +15,8 @@ public class ParseCode {
     private ArrayList<Token> tokens;
     
     public ParseCode(ArrayList<Token> tokens) {
-        this.tokens = tokens;        
+        this.tokens = tokens;          
+        TheCollector.printTokens();
         //traverseGrammar();
     }
        
