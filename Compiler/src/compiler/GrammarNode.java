@@ -106,8 +106,9 @@ public class GrammarNode {
     public void printParents() {
         int count = 1;
         try {
+            System.out.printf("\t");
             for (GrammarNode temp : parents) {
-                System.out.printf("Parent %d: %-50s", count, temp.getGrammarId());
+                System.out.printf("Parent %-3d: %-30s", count, temp.getGrammarId());
                 count++;
             }
         } catch (Exception ex) {
@@ -120,7 +121,7 @@ public class GrammarNode {
         int count = 1;
         try {
             for (ChildBatch temp : batchesOfChildren) {
-                System.out.printf("\nChild Batch %-50d ", count);
+                System.out.printf("\nChild Batch %d\n", count);
                 temp.printChildren();
                 count++;
             }

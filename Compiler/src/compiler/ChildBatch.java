@@ -31,8 +31,9 @@ public class ChildBatch {
     public void printChildren() {
         int count = 1;
         try {
+            System.out.printf("\t");
             for (GrammarNode temp : children) {
-                System.out.printf("Child %d: %-50s", count, temp.getGrammarId());
+                System.out.printf("Child %-3d: %-30s", count, temp.getGrammarId());
                 count++;
             }
         } catch (Exception ex) {

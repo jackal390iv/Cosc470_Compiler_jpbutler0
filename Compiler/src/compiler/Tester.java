@@ -11,11 +11,10 @@ package compiler;
 public class Tester {
 
     public static void main(String[] args) {
-        TheCollector grammarCollection = new TheCollector();
-        TheChecker changer = new TheChecker();
+        TheCollector theCollector = new TheCollector();
         ScanGrammar scanGrammar = new ScanGrammar("./editedFiles/grammar.txt");
         ScanCode scanCode = new ScanCode("./editedFiles/codeV1.txt");
+        TheChecker checker = new TheChecker();
         ParseCode parseCode = new ParseCode(TheCollector.getTokens());
-
     }
 }

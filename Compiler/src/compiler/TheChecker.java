@@ -16,25 +16,26 @@ public class TheChecker {
 
     public TheChecker() {
         elements = new ArrayList<>();
+        combineStringLiterals();
+        createTokens();
+        checkIdentifiers();
+        setSizeDefaults();
     }
 
-    public static void checkBasicSyntax(String code, String location) {
-        String temp = "\\";
+    private void createTokens() {
+        boolean checker;
         try {
-            if (location.equals("START")) {
-                if (!((code.equals("DECLARE")) || (code.equals("BEGIN")))) {
-                    System.out.printf("\nERROR\nThe Following Syntax Errors Have Occured: Program Must Start With Either 'DECLARE' or 'BEGIN'");
-                    System.exit(0);
+            for (int i = 0; i < TheCollector.getCodeList().size(); i++) {
+                checker = false;
+                for (int k = 0; k < TheCollector.getReserveWords().size(); k++) {
+                    if (TheCollector.getCodeList().get(i).equals(TheCollector.getReserveWords().get(k))) {
+                        TheCollector.addToken(new Token(TheCollector.getCodeList().get(i), TheCollector.getCodeList().get(i)));
+                        checker = true;
+                        break;
+                    }
                 }
-            } else if (location.equals("END_Minus_1")) {
-                if (!(code.equals("END;"))) {
-                    System.out.printf("\nERROR\nThe Following Syntax Errors Have Occured: Program Must End With 'END;' followed by '%s'", temp.charAt(0));
-                    System.exit(0);
-                }
-            } else if (location.equals("END")) {
-                if (!(code.equals("\\"))) {
-                    System.out.printf("\nERROR\nThe Following Syntax Errors Have Occured: Program Must End With 'END;' followed by '%s'", temp.charAt(0));
-                    System.exit(0);
+                if (checker == false) {
+                    TheCollector.addToken(new Token(TheChecker.defineUnknown(TheCollector.getCodeList().get(i)), TheCollector.getCodeList().get(i)));
                 }
             }
         } catch (Exception ex) {
@@ -47,37 +48,37 @@ public class TheChecker {
         String temp = "", first = "";
         int counter = 0, checker = 0, spaces = 0;
         boolean found = false;
-        for (int i = 0; i < ScanCode.getList().size(); i++) {
+        for (int i = 0; i < TheCollector.getCodeText().size(); i++) {
             found = false;
-            if (ScanCode.getList().get(i).startsWith("'")) {
+            if (TheCollector.getCodeText().get(i).startsWith("'")) {
                 counter = 0;
-                while ((counter < ScanCode.getList().size()) && (!(ScanCode.getList().get(i + counter).endsWith("'")))) {
+                while ((counter < TheCollector.getCodeText().size()) && (!(TheCollector.getCodeText().get(i + counter).endsWith("'")))) {
                     counter++;
                 }
-                if (ScanCode.getList().get(i + counter).endsWith("'")) {
+                if (TheCollector.getCodeText().get(i + counter).endsWith("'")) {
                     found = true;
                     checker = 0;
-                    first = ScanCode.getList().get(i);
+                    first = TheCollector.getCodeText().get(i);
                     while (checker <= counter) {
-                        if (ScanCode.getList().get(i + checker).isEmpty()) {
+                        if (TheCollector.getCodeText().get(i + checker).isEmpty()) {
                             temp = temp + " ";
                             spaces++;
                         } else {
-                            temp = temp + ScanCode.getList().get(i + checker);
+                            temp = temp + TheCollector.getCodeText().get(i + checker);
                         }
                         checker++;
                     }
                 }
             }
             if (found == true) {
-                for (int k = 0; k < ScanCode.getCode().size(); k++) {
-                    if (ScanCode.getCode().get(k).equals(first)) {
+                for (int k = 0; k < TheCollector.getCodeList().size(); k++) {
+                    if (TheCollector.getCodeList().get(k).equals(first)) {
                         checker = 0;
                         while (checker <= counter - spaces) {
-                            ScanCode.getCode().remove(k);
+                            TheCollector.getCodeList().remove(k);
                             checker++;
                         }
-                        ScanCode.getCode().add(k, temp);
+                        TheCollector.getCodeList().add(k, temp);
                         break;
                     }
                 }
@@ -209,4 +210,35 @@ public class TheChecker {
         }
     }
 
+    //The following syntax checker method should be obsolete; as it would be covered under parse tree creation 
+    /*
+     checkBasicSyntax(TheCollector.getCodeList().get(0), "START");
+     checkBasicSyntax(TheCollector.getCodeList().get(TheCollector.getCodeList().size() - 2), "END_Minus_1");
+     checkBasicSyntax(TheCollector.getCodeList().get(TheCollector.getCodeList().size() - 1), "END"); 
+    
+     public static void checkBasicSyntax(String code, String location) {
+     String temp = "\\";
+     try {
+     if (location.equals("START")) {
+     if (!((code.equals("DECLARE")) || (code.equals("BEGIN")))) {
+     System.out.printf("\nERROR\nThe Following Syntax Errors Have Occured: Program Must Start With Either 'DECLARE' or 'BEGIN'");
+     System.exit(0);
+     }
+     } else if (location.equals("END_Minus_1")) {
+     if (!(code.equals("END;"))) {
+     System.out.printf("\nERROR\nThe Following Syntax Errors Have Occured: Program Must End With 'END;' followed by '%s'", temp.charAt(0));
+     System.exit(0);
+     }
+     } else if (location.equals("END")) {
+     if (!(code.equals("\\"))) {
+     System.out.printf("\nERROR\nThe Following Syntax Errors Have Occured: Program Must End With 'END;' followed by '%s'", temp.charAt(0));
+     System.exit(0);
+     }
+     }
+     } catch (Exception ex) {
+     System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+     //ex.printStackTrace();
+     }
+     }     
+     //*/
 }

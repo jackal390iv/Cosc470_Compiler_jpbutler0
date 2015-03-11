@@ -16,7 +16,7 @@ public class TheCollector {
 
     private static HashMap<String, GrammarNode> grammarNodes;
     private static ArrayList<Token> tokens;
-    private static ArrayList<String> reserveWords, unknownList, reserveWordsMinusCombinables, combinables, codeList;
+    private static ArrayList<String> reserveWords, unknownList, reserveWordsMinusCombinables, combinables, codeText, codeList;
     private static String commentSymbol, commentBlockStartSymbol, commentBlockEndSymbol;
     private static boolean endLineExists;
 
@@ -26,6 +26,7 @@ public class TheCollector {
         unknownList = new ArrayList<>();
         reserveWordsMinusCombinables = new ArrayList<>();
         combinables = new ArrayList<>();
+        codeText = new ArrayList<>();
         codeList = new ArrayList<>();
         tokens = new ArrayList<>();
         endLineExists = false;
@@ -51,6 +52,10 @@ public class TheCollector {
 
     public static ArrayList<String> getCombinables() {
         return combinables;
+    }
+
+    public static ArrayList<String> getCodeText() {
+        return codeText;
     }
 
     public static ArrayList<String> getCodeList() {
@@ -80,7 +85,7 @@ public class TheCollector {
     public static void printGrammarNodes() {
         System.out.printf("\n\nGrammar Nodes:");
         for (String key : grammarNodes.keySet()) {
-            System.out.printf("\n\n\nHashMap Key: %-50sGrammar Id: %-50sChild Batch Count: %-50dParent Count: %-50d\n", key, grammarNodes.get(key).getGrammarId(), grammarNodes.get(key).getChildBatchCount(), grammarNodes.get(key).getParentCount());
+            System.out.printf("\n\n\n----------------------------------------------------------------------------------------------------------------------------------------------------------------\nHashMap Key: %-30sGrammar Id: %-30sParent Count: %-10dChild Batch Count: %d\n", key, grammarNodes.get(key).getGrammarId(), grammarNodes.get(key).getParentCount(), grammarNodes.get(key).getChildBatchCount());
             grammarNodes.get(key).printParents();
             grammarNodes.get(key).printChildBatches();
         }
@@ -91,7 +96,7 @@ public class TheCollector {
         System.out.printf("\n\nGrammar Nodes That Point To Themselves:");
         for (String key : grammarNodes.keySet()) {
             if (grammarNodes.get(key).doesPointsToSelf()) {
-                System.out.printf("\n\n\nHashMap Key: %-50sGrammar Id: %-50sChild Batch Count: %-50dParent Count: %-50d\n", key, grammarNodes.get(key).getGrammarId(), grammarNodes.get(key).getChildBatchCount(), grammarNodes.get(key).getParentCount());
+                System.out.printf("\n\n\n\n----------------------------------------------------------------------------------------------------------------------------------------------------------------\nHashMap Key: %-30sGrammar Id: %-30sParent Count: %-10dChild Batch Count: %d\n", key, grammarNodes.get(key).getGrammarId(), grammarNodes.get(key).getParentCount(), grammarNodes.get(key).getChildBatchCount());
                 grammarNodes.get(key).printParents();
                 grammarNodes.get(key).printChildBatches();
             }
@@ -99,15 +104,40 @@ public class TheCollector {
         System.out.printf("\n");
     }
 
-    /**
-     * This method prints all grammar reserve words that are held in the
-     * 'reserve' ArrayList.
-     *
-     */
+    public static void printReserveWordsCompact() {
+        int counter = 0, holder = 0;
+        System.out.printf("\n\nReserve Words List:\n");
+        for (String temp : reserveWords) {
+            System.out.printf("%-3d: %-30s", holder, temp);
+            if (counter == 2) {
+                System.out.printf("\n");
+                counter = -1;
+            }
+            counter++;
+            holder++;
+        }
+        System.out.printf("\n");
+    }
+
     public static void printReserveWords() {
-        System.out.printf("\n\nReserve Word List:");
+        System.out.printf("\n\nReserve Words List:");
         for (String temp : reserveWords) {
             System.out.printf("\n%s", temp);
+        }
+        System.out.printf("\n");
+    }
+
+    public static void printUnknownListCompact() {
+        int counter = 0, holder = 0;
+        System.out.printf("\n\nUnknown Variables List:\n");
+        for (String temp : unknownList) {
+            System.out.printf("%-3d: %-30s", holder, temp);
+            if (counter == 2) {
+                System.out.printf("\n");
+                counter = -1;
+            }
+            counter++;
+            holder++;
         }
         System.out.printf("\n");
     }
@@ -120,10 +150,40 @@ public class TheCollector {
         System.out.printf("\n");
     }
 
+    public static void printReserveWordsMinusCombinablesCompact() {
+        int counter = 0, holder = 0;
+        System.out.printf("\n\nReserve Words Minus Combinables List:\n");
+        for (String temp : reserveWordsMinusCombinables) {
+            System.out.printf("%-3d: %-30s", holder, temp);
+            if (counter == 2) {
+                System.out.printf("\n");
+                counter = -1;
+            }
+            counter++;
+            holder++;
+        }
+        System.out.printf("\n");
+    }
+
     public static void printReserveWordsMinusCombinables() {
         System.out.printf("\n\nReserve Words Minus Cobinables List:");
         for (String temp : reserveWordsMinusCombinables) {
             System.out.printf("\n%s", temp);
+        }
+        System.out.printf("\n");
+    }
+
+    public static void printCombinablesCompact() {
+        int counter = 0, holder = 0;
+        System.out.printf("\n\nCombinables List:\n");
+        for (String temp : combinables) {
+            System.out.printf("%-3d: %-30s", holder, temp);
+            if (counter == 2) {
+                System.out.printf("\n");
+                counter = -1;
+            }
+            counter++;
+            holder++;
         }
         System.out.printf("\n");
     }
@@ -136,10 +196,52 @@ public class TheCollector {
         System.out.printf("\n");
     }
 
+    public static void printCodeTextCompact() {
+        int counter = 0, holder = 0;
+        System.out.printf("\n\nCode Text:\n");
+        for (String temp : codeText) {
+            if (temp.isEmpty()) {
+                System.out.printf("%-3d: %-30s", holder, "__");
+            } else {
+                System.out.printf("%-3d: %-30s", holder, temp);
+            }
+            if (counter == 2) {
+                System.out.printf("\n");
+                counter = -1;
+            }
+            counter++;
+            holder++;
+        }
+        System.out.printf("\n");
+    }
+
+    public static void printCodeText() {
+        System.out.printf("\n\nCode Text:");
+        for (String temp : codeText) {
+            System.out.printf("\n%s", temp);
+        }
+        System.out.printf("\n");
+    }
+
+    public static void printCodeListCompact() {
+        int counter = 0, holder = 0;
+        System.out.printf("\n\nCode List:\n");
+        for (String temp : codeList) {
+            System.out.printf("%-3d: %-30s", holder, temp);
+            if (counter == 2) {
+                System.out.printf("\n");
+                counter = -1;
+            }
+            counter++;
+            holder++;
+        }
+        System.out.printf("\n");
+    }
+
     public static void printCodeList() {
         System.out.printf("\n\nCode List:");
         for (String temp : codeList) {
-            System.out.println(temp);
+            System.out.printf("\n%s", temp);
         }
         System.out.printf("\n");
     }
@@ -150,6 +252,21 @@ public class TheCollector {
             temp.printIdAndValue();
         }
         System.out.println("\n");
+    }
+
+    public static void printDatabaseAndProcesses() {
+        System.out.printf("\n\nDatabase And Processes:");
+        printGrammarNodes();
+        System.out.printf("\n\n\n\n\n");
+        printGrammarSelfPointerNodes();
+        System.out.printf("\n\n\n\n\n");
+        printReserveWordsCompact();
+        printUnknownListCompact();
+        printReserveWordsMinusCombinablesCompact();
+        printCombinablesCompact();
+        printCodeTextCompact();
+        printCodeListCompact();
+        printTokens();
     }
 
     public static void setCommentSymbol(String symbol) {
@@ -250,15 +367,14 @@ public class TheCollector {
         }
     }
 
-    public static void addCode(String code) {
-        try {
-            codeList.add(code);
-        } catch (Exception ex) {
-            System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
-            //ex.printStackTrace();
-        }
-    }
-
+    /*public static void addCode(String code) {
+     try {
+     codeList.add(code);
+     } catch (Exception ex) {
+     System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
+     //ex.printStackTrace();
+     }
+     }//*/
     public static void addToken(Token token) {
         try {
             tokens.add(token);
