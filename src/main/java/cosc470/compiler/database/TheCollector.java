@@ -2,8 +2,10 @@
  * Class: COSC 470-001
  * Project: Compiler
  */
-package compiler;
+package cosc470.compiler.database;
 
+import cosc470.compiler.resources.Token;
+import cosc470.compiler.resources.GrammarNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 

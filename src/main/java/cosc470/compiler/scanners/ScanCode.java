@@ -2,8 +2,9 @@
  * Class: COSC 470-001
  * Project: Compiler
  */
-package compiler;
+package cosc470.compiler.scanners;
 
+import cosc470.compiler.database.TheCollector;
 import java.io.File;
 import java.util.Scanner;
 
@@ -66,6 +67,7 @@ public class ScanCode {
         } catch (Exception ex) {
             System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
+            System.exit(0);
         }
     }
 

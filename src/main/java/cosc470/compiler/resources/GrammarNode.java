@@ -2,8 +2,9 @@
  * Class: COSC 470-001
  * Project: Compiler
  */
-package compiler;
+package cosc470.compiler.resources;
 
+import cosc470.compiler.database.TheCollector;
 import java.util.ArrayList;
 
 /**
