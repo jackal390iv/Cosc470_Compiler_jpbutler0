@@ -18,11 +18,14 @@ public class Tester {
 
     public static void main(String[] args) {
         try {
-            TheCollector theCollector = new TheCollector();
+            
+        	
+        	
+        	/*TheCollector theCollector = new TheCollector();
             ScanGrammar scanGrammar = new ScanGrammar("./src/main/resources/grammar/grammarV1.txt");
             ScanCode scanCode = new ScanCode("./src/main/resources/code/codeV1.txt");
             TheChecker checker = new TheChecker();
-            ParseCode parseCode = new ParseCode();
+            ParseCode parseCode = new ParseCode(); //*/
 
         } catch (Exception ex) {
             System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
